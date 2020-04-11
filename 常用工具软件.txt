@@ -1,0 +1,19 @@
+一、 常用IDE和工具记录
+GO IDE: Goland liteIDE，Goland（go）
+python IDE: pythonCharm 
+java IDE idea
+c++ IDE :Microsoft Visual Studio 2010
+
+阅读源码c++ ：sourceinsight（阅读C语言）破解方法：https://blog.csdn.net/biubiuibiu/article/details/78044232
+
+连接linux服务器：  SecureCRT，xshell
+
+代码管理：git
+
+文本操作：nodepad++
+
+抓包分析包： wireshark  tcpdump
+
+画图： 亿图
+
+云笔记： 有道云笔记
