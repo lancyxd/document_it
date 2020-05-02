@@ -39,6 +39,7 @@ func PrintMsg(str string){
 *斜体*   _斜体_
 ***粗斜体***   ___粗斜体___  
 ==高亮==
+`你好`
 ~~被删除的文字~~
 上标：X<sub>2</sub>，下标：O<sup>2</sup>    
 ```
@@ -60,7 +61,7 @@ func PrintMsg(str string){
 ***   
 ```
 
-## 6、图片插入
+## 6、图片插入与页面内跳转
 
 ```java
 //在线图片插入
@@ -68,6 +69,16 @@ func PrintMsg(str string){
 //本地图片
 ![图片1](./image/测试图片.jpg)
 ![图片1](E:\document_it\image\测试图片.jpg)
+       
+//页面内跳转
+[跳转个人标题](# 个人标题)
+##### 个人标题
+
+[跳转到开发指南](# tagNotice)
+<p id="tagNotice">开发指南</p>
+
+[目录1](#目录测试)
+### 目录测试       
 ```
 
 ## 7、超链接
