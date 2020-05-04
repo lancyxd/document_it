@@ -624,17 +624,11 @@ Linux中默认的shell是`/bin/bash或/usr/bin/bash`，流行的shell有ash、ba
   & # 后台进程符
   #
   
-  
-  
-  
-  
   ./hello.sh build test  # $0值 ./hello.sh，$1的值是build，$2的值是test
   $# # 是传给脚本的参数个数
   $@ # 是传给脚本的所有参数的列表
   $(dirname "$0") # 脚本放置的当前目录
   $* # 所有参数列表
-  
-  
   
   echo acceptor acceptor|tr ' ' '\n'  # 去除空格用换行符替换输出
   echo $your_name # 变量名前加美元符号 
@@ -669,12 +663,13 @@ Linux中默认的shell是`/bin/bash或/usr/bin/bash`，流行的shell有ash、ba
       echo '文件不存在!'
   fi
   ```
-
+  
   **shell实践例子**
-
+  
   ```shell
+  # 坏的解释器:没有那个文件或目录。这是由于脚本文件在保存时使用了DOS文件格式造成的，可以用vim打开文件，然后执行下列操作   :set ff=unix ,  :wq 
+  dos2unix build.sh 
+```
   
-  ```
 
-  
 
