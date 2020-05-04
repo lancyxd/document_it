@@ -236,7 +236,7 @@ mysql -u用户名 -p密码 数据库名 < 数据库名.sql
 (3)slave重做中继日志中的事件，将改变反映它自己的数据。
 ```
 
-![mysql主从复制](./image/04_1mysql主从复制.png)
+![mysql主从复制](./image/02_1mysql主从复制.png)
 
 
 
@@ -248,7 +248,7 @@ mysql -u用户名 -p密码 数据库名 < 数据库名.sql
 
 `key2和key4之间增加一个node4节点，不增加node4节点时，key2顺时针应该放到node3中。增加节点之后，key2放置于node4中，key4放置于node3中。`
 
-![**一致性hash算法](./image/04_2hash算法.png)
+![**一致性hash算法](./image/02_2hash算法.png)
 
 ### 4.5聚簇索引和非聚簇索引
 
