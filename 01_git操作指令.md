@@ -46,7 +46,7 @@ git push 上交代码至服务器
 
   
 
-- **dev分支合并至master**
+- **dev分支合并至master（先提交至远端dev，然后再合并至master）**
 
   ```shell
   git checkout master // 切换到master，未改变
