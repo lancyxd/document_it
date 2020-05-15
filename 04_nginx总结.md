@@ -75,7 +75,7 @@
 
 ## 2、路径匹配location
 
-
+[location匹配规则](https://cloud.tencent.com/developer/article/1454521)
 
 ```shell
 1) 基本语法
