@@ -16,7 +16,8 @@
   # 备注：本地work目录挂载，需关闭widows防火墙;有线和无线不能混合挂载，一定要注意先卸载掉，才可以挂载
   
   umount  /mnt/floppy #卸载
-  fuser -mv  /data/xxx/lxx/project  # 查看占用的进程，-m显示所有文件系统和块设备；-v 详细输出
+  fuser -mv  /data/xxx/lxx/project  # 查看谁在使用资源，占用的进程，-m显示所有文件系统和块设备；-v 详细输出
+  fuser -mvk /data/xxx/lxx/project # 杀掉占用的进程
   sudo umount project 解除挂载
   ```
 
@@ -669,7 +670,10 @@ Linux中默认的shell是`/bin/bash或/usr/bin/bash`，流行的shell有ash、ba
   ```shell
   # 坏的解释器:没有那个文件或目录。这是由于脚本文件在保存时使用了DOS文件格式造成的，可以用vim打开文件，然后执行下列操作   :set ff=unix ,  :wq 
   dos2unix build.sh 
+  ```
 ```
   
 
 
+
+```
