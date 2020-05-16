@@ -291,3 +291,4 @@ mysql -u用户名 -p密码 数据库名 < 数据库名.sql
   某个字段经常用来搜索，为其建立索引index    //alter table `users` add index(`last_name`)
   ```
 
+[MySQL B+Tree索引和Hash索引的区别](https://cloud.tencent.com/developer/article/1590565)
