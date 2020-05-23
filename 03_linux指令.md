@@ -4,7 +4,7 @@
 
 - **mount**  挂载硬盘或镜像；**umount** 解除挂载
 
-  ```powershell
+  ```shell
   mount -t 类型 -o 挂接方式 源路径 目标路径  # mount windows文件网络共享，推荐cifs；-t 指定文件系统的类型; -o 设备或档案的挂接方式
   mount /dev/vdb /app #挂载至app目录下
   mount -t cifs -o username=xxx password=xxx //windowsIP地址/共享名 /挂载目录  # windows共享文件夹挂载至linux
@@ -21,7 +21,7 @@
   sudo umount project 解除挂载
   ```
 
-  ```powershell
+  ```shell
   # 跨服务器挂载  mount 127.0.0.28:/zr1  /data  在127.0.0.46机器上挂载127.0.0.28的/zr1
   步骤：文件服务器（被挂载机）：192.168.1.100；操作机（挂载到机）：192.168.1.200
   1)开启NFS开机运行，chkconfig --level 35 nfs on；手动启动服务 service nfs start；
@@ -420,7 +420,7 @@ tcp.flags==0x011
 
 - **awk：**根据内容分析并处理，用于文本处理的语言（取行，过滤），支持正则。对于grep的查找，sed的编辑，awk在对数据分析并生成报告时，显得尤为强大
 
-  ```powershell
+  ```shell
   # NR代表行数，$n取某一列，$NF最后一列；FS竖着切，列的分隔符 ；RS横着切，行的分隔符，参数-F是改变awk的默认分隔符
   
   # 用法：awk '条件{命令}' 文件 
@@ -438,6 +438,8 @@ tcp.flags==0x011
   ifconfig|grep "inet"|awk '{print $2}' |head -1  # 打印第一行的第二列
   ifconfig |grep -o "[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*"	# 只显示被模式匹配到的字符串
   cat search.log|grep HANDLE_LOG|awk -F ":" '{print $6}'  |awk -F "," '{print $1}'| sort -r -n 
+  
+   sort -n -r -k 7 -t ' ' 11.txt  # 逆序 -r， -k指定列数
   ```
 
 - **sed：** sed自动编辑一个或多个文件（非交互式编译文件），简化文件的反复操作。

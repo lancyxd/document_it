@@ -323,6 +323,8 @@ redis-benchmark -n 100000 -q script load "redis.call('set','foo','bar')" //只�
 
  [redis与memcache区别](https://baijiahao.baidu.com/s?id=1628669085694391797&wfr=spider&for=pc)
 
+[Redis与Memcache区别最全整理](https://baijiahao.baidu.com/s?id=1665364123307535771&wfr=spider&for=pc)
+
 ## 6、参考链接
 
 [Redis 内存使用优化与存储](https://www.infoq.cn/article/tq-redis-memory-usage-optimization-storage/)

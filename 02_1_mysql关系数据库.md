@@ -74,6 +74,7 @@
   select sum(field1) as sumvalue from table1; #  求和
   select avg(field1) as avgvalue from table1; #  平均
   select max(field1) as maxvalue from table1; #  最大，最下min
+  select sum(filesize) from catalogue_index_0 where userid ="g_xxx" and create_ts between "1567502284" and "1767502299" limit 50; 
   
   delete from  tablename;// 清空表中全部数据
   delete from pp_api_source where id=8;
