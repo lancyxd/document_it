@@ -293,3 +293,43 @@ mysql -u用户名 -p密码 数据库名 < 数据库名.sql
   ```
 
 [MySQL B+Tree索引和Hash索引的区别](https://cloud.tencent.com/developer/article/1590565)
+
+
+
+## 5、位运算
+
+```shell
+murmurhash64(user_id)        murmurhash32(bucket_user) low16位
+murmurhash64(user_id) & 0xFFFFFFFFFFFF0000  # 取high 48位
+murmurhash(bucket) & 0xFFFF # 去low 16位
+aa = (murmurhash(user_id) & 0xFFFFFFFFFFFF0000) | (murmurhash(bucket) & 0xFFFF) #high48位和low16位合并
+
+# 字节位运算知识补充
+1字节=8位
+uint64  8字节
+
+二进制    1111 1111
+十六进制  0xFF
+10101010 & 0xF (00001111)  //  low 4位         00001010
+10101010 & 0xF0(11110000)  //  high 4位        10100000
+
+00000010   0x2(低2位)| 10101000(高6位)   // 异或  10101010
+10101000   0xA8    
+10101010   0xAA
+
+# mysql bigint字段
+uint64取值范围： [0,2^64]  0~18446744073709551615  
+bigint从-2^63 (-9223372036854775808) 到 2^63-1 (9223372036854775807) 的整型数据（所有数字）。存储大小为 8 个字节。
+id bigint(10)  id1  bigint(20)
+0000000001     00000000000000000002
+
+CREATE TABLE `testbigint` (
+  `testbigint1` bigint(20) NOT NULL DEFAULT '0',
+  `testbigint2` bigint(20) unsigned NOT NULL DEFAULT '0'   
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert into testbigint values(0,18446744073709551616); # 插入616时，其依旧填充最大数18446744073709551615
+```
+
+
+

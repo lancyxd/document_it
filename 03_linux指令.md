@@ -237,18 +237,28 @@
 
 ### 2、网络指令
 
-```powershell
+```shell
 ifconfig # 查阅本机的网络卡卡号   （网卡信息：eno1第一块网卡； lo主机的回环地址）
 UP(代表网卡开启状态) RUNNING(代表网卡的网线被接上);RX接收;TX发送
 MULTICAS(支持组播)  MTU:1500(最大传输单元):1500字节;
 
-netstat # 察看本机的网络联机与后门；用于显示与IP、TCP、UDP和ICMP协议相关的统计数据。命令用于显示各种网络相关信息， -n 拒绝显示别名，能显示数字的全部转化成数字。-t (tcp)仅显示tcp相关选项。-l 仅列出有在 Listen (监听) 的服務状态。-p 显示建立相关链接的程序名。-a display all sockets (default: connected)
-
+netstat # 察看本机的网络联机与后门；用于显示与IP、TCP、UDP和ICMP协议相关的统计数据。显示各种网络相关信息
+-a 显示所有选项
+-n 拒绝显示别名
+-t 仅显示tcp相关选项
+-u 仅显示udp相关选项
+-l 仅列出有在 Listen (监听) 的服务状态 
+-p 显示建立相关链接的程序名
+-r 显示路由信息
+-e 显示扩展信息
+-s 按各个协议进行统计
+-c 每个一个固定时间
 netstat -ntlp  # 用与检查某个端口是否开放
 netstat -an # 查看那些ip连接本机
 netstat -nat # 查看状态
 netstat -nat|grep -i "80"|wc -l # 统计80端口连接数
 netstat -na|grep ESTABLISHED|wc -l # 统计已连接上的，状态为“established
+netstat -na|grep "ESTABLISHED"|awk '{print $5}'|awk -F ':' '{print $1}'|sort|uniq -c|sort -r # -c重复行数 -r逆序排
 
 ss(Socket Statistics) # 它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。
 ss -anp|grep redis-server # 显示socket状态
@@ -604,78 +614,137 @@ Linux中默认的shell是`/bin/bash或/usr/bin/bash`，流行的shell有ash、ba
 
 ![shell图片](./image/04_1shell图片.png)
 
-- **基本语法**
+###  4.1 、**基本语法**
 
-  ```powershell
-  # 单行注释，除了#!/bin/bash里的#特殊
-  :<<!
-  多行注释
-  !
-  
-  str="I know your are \"$your_name\"! \n" # 单双引号区别：双引号里可以有变量，可以出现转义字符
-  #!/bin/sh  指定脚本解释器，至于文件首行
-  ./hello.sh  /bin/sh hello.sh  # 运行
-  # 标准输入文件（stdin），通常对应终端的键盘；标准输出文件（stdout）和标准错误输出文件（stderr）；（0、1和2分别表示标准输入、标准输出和标准错误信息输出）； > 重定向输出符号 ； >>重定向输出符号，但有追加的功能
-  ls -l /bin/*sh 
-  readonly myUrl # 标识变量为只读变量 
-  unset myUrl # 删除变量
-  $ # 变量符，使其后的普通字符作为变量名，如$a表示变量a的值
-  echo 'my $SHELL' # 单引号 被引起的字符全部做普通字符，即全部原样
-  # 双引号：引号内的内容，除$、转义符\、倒引号`这三个保留特殊功能，其他字符均做普通字符
-  * # 匹配任意字符
-  ? # 匹配任意一个字符
-  & # 后台进程符
-  #
-  
-  ./hello.sh build test  # $0值 ./hello.sh，$1的值是build，$2的值是test
-  $# # 是传给脚本的参数个数
-  $@ # 是传给脚本的所有参数的列表
-  $(dirname "$0") # 脚本放置的当前目录
-  $* # 所有参数列表
-  
-  echo acceptor acceptor|tr ' ' '\n'  # 去除空格用换行符替换输出
-  echo $your_name # 变量名前加美元符号 
-  echo ${#greeting1} # 获取字符串长度 
-  echo ${greeting:1:4} # 提取字符串长度 
-  echo `expr index "$greeting" ho` # 查找字符h 或 o的位置(哪个字母先出现就计算哪个) 
-  
-  array_name=(1 2 3 4 7) # 数组
-  echo ${array_name[2]}
-  echo ${array_name[@]}
-  echo ${#array_name[@]} # 长度
-  echo ${#array_name[*]}
-  echo ${#array_name[n]}
-  
-  echo acceptor acceptor|tr ' ' '\n'|awk '!a[acceptor]++'  # 去重
-  echo acceptor acceptor|tr ' ' '\n'|sort -u
-  echo acceptor acceptor|tr ' ' '\n'|uniq  # 先排序再去重
-  echo acceptor excutor acceptor|tr ' ' '\n'|sort|uniq  # 所有重复的行，并计算行数
-  
-  # if语句用法
-  if  condition
-  then
-      statement(s)
-  fi
-  
-  #!/bin/bash
-  cd /app/ddtest
-  if test -e ./myfile
-  then
-      echo '文件已存在!'
-  else
-      echo '文件不存在!'
-  fi
-  ```
-  
-  **shell实践例子**
-  
+```powershell
+# 单行注释，除了#!/bin/bash里的#特殊
+:<<!
+多行注释
+!
+
+str="I know your are \"$your_name\"! \n" # 单双引号区别：双引号里可以有变量，可以出现转义字符
+#!/bin/sh  指定脚本解释器，至于文件首行
+./hello.sh  /bin/sh hello.sh  # 运行
+# 标准输入文件（stdin），通常对应终端的键盘；标准输出文件（stdout）和标准错误输出文件（stderr）；（0、1和2分别表示标准输入、标准输出和标准错误信息输出）； > 重定向输出符号 ； >>重定向输出符号，但有追加的功能
+ls -l /bin/*sh 
+readonly myUrl # 标识变量为只读变量 
+unset myUrl # 删除变量
+$ # 变量符，使其后的普通字符作为变量名，如$a表示变量a的值
+echo 'my $SHELL' # 单引号 被引起的字符全部做普通字符，即全部原样
+# 双引号：引号内的内容，除$、转义符\、倒引号`这三个保留特殊功能，其他字符均做普通字符
+* # 匹配任意字符
+? # 匹配任意一个字符
+& # 后台进程符
+#
+
+./hello.sh build test  # $0值 ./hello.sh，$1的值是build，$2的值是test
+$# # 是传给脚本的参数个数
+$@ # 是传给脚本的所有参数的列表
+$(dirname "$0") # 脚本放置的当前目录
+$* # 所有参数列表
+
+echo acceptor acceptor|tr ' ' '\n'  # 去除空格用换行符替换输出
+echo $your_name # 变量名前加美元符号 
+echo ${#greeting1} # 获取字符串长度 
+echo ${greeting:1:4} # 提取字符串长度 
+echo `expr index "$greeting" ho` # 查找字符h 或 o的位置(哪个字母先出现就计算哪个) 
+
+array_name=(1 2 3 4 7) # 数组
+echo ${array_name[2]}
+echo ${array_name[@]}
+echo ${#array_name[@]} # 长度
+echo ${#array_name[*]}
+echo ${#array_name[n]}
+
+echo acceptor acceptor|tr ' ' '\n'|awk '!a[acceptor]++'  # 去重
+echo acceptor acceptor|tr ' ' '\n'|sort -u
+echo acceptor acceptor|tr ' ' '\n'|uniq  # 先排序再去重
+echo acceptor excutor acceptor|tr ' ' '\n'|sort|uniq  # 所有重复的行，并计算行数
+
+# if语句用法
+if  condition
+then
+    statement(s)
+fi
+
+#!/bin/bash
+cd /app/ddtest
+if test -e ./myfile
+then
+    echo '文件已存在!'
+else
+    echo '文件不存在!'
+fi
+```
+
+### 4.2**shell实践例子**
+
   ```shell
-  # 坏的解释器:没有那个文件或目录。这是由于脚本文件在保存时使用了DOS文件格式造成的，可以用vim打开文件，然后执行下列操作   :set ff=unix ,  :wq 
-  dos2unix build.sh 
+# 坏的解释器:没有那个文件或目录。这是由于脚本文件在保存时使用了DOS文件格式造成的，可以用vim打开文件，然后执行下列操作   :set ff=unix ,  :wq 
+dos2unix build.sh 
+
+# for相关用法
+for i in {0..9} ; do echo $i $RANDOM;done
+for i in $(seq 5) ; do echo $i;done
+for i in $(seq 5 -1 1) ; do echo $i;done
+for i in $(seq 6 -2 1) ; do echo -en $i;done # -n不换行输出, -e处理特殊字符
+for i in $(seq 5 -1 1) ; do echo -en "\b$i";sleep 1;done # \b 删除前一个字符
+
+# 
+arch # x86_64 显示机器的处理器架构 
+uname -m
+uname -r # 3.10.0-514.el7.x86_64 正在使用的内核版本
+dmidecode -q # 显示硬件系统部件（SMBIOS / DMI）
+cat /proc/cpuinfo 
+cat /proc/interrupts 
+cat /proc/meminfo
+cat /proc/version # 显示内核版本
+cat /proc/mounts # 显示已加载的文件系统
+date # 显示系统日期
+cal 2020 # 显示2020日历
+shutdown -h now # 关闭系统
+shutdown -r now # 重启
+reboot # 重启
+ls *[0-9]* # 显示包含数字的文件名或目录
+tree # 显示文件和目录由根目录开始的树形结构
+lstree# 显示文件和目录由根目录开始的树形结构
+mkdir -p /tmp/dir1/dir2 # 创建一个目录树
+rmdir dir1 # 删除一个叫作“dir1”的目录’
+rm -rf dir1 # 删除一个叫作“dir1”的目录并同时删除其内容
+touch -t 201605171210.20  file1 # 修改文件时间戳   -t 使用指定的日期时间，而非现在的时间
+stat cs.sh  # 查看文件详情
+head -2 file1 # 查看一个文件的前两行
+tail -2 file1 # 查看一个文件的最后两行
+sed 's/string1/string2/g' example.txt # 将example.txt文件中的“string1”替换成“string2”
+sed '/^$/d' example.txt # 从example.txt文件中删除所有空白行， 正则表达式需要用//括起来啊
+sed "/^#/d" example.txt # 删除开头第一个字符是#的行
+sed '/ *#/d; /^$/d' example.txt # 从example.txt文件中删除所有注释和空白行
+sed -e '1d' example.txt # 从文件example.txt中删除第一行
+
+tr命令常用来编写优雅的单行命令 # https://blog.csdn.net/u010003835/article/details/80752797
+cat file | tr "abc" "xyz" > new_file # file中出现的"a"字母，都替换成"x"字母，"b"字母替换为"y"字母，"c"字母替换为"z"字母
+echo "HELLO WORLD" | tr 'A-Z' 'a-z' # 由大写转换为小写
+echo "hello 123 world 456" | tr -d '0-9' # 删除数字字符
+cat text | tr '\t' ' ' # 将制表符转换为空格
+echo 'esempio' | tr '[:lower:]' '[:upper:]’ # 合并上下单元格内容
+
+# 按行执行命令 , eval echo $NAME等价于echo $NAME , 休眠2s sleep 2
+#!/bin/bash
+while read -r line
+do
+    #echo $line
+    eval $line
+    sleep 2
+done < ./1ine_ls.txt
+
+# 按行读取文件 , 拼接字符串
+#!/bin/bash
+cat ./gid.txt | while read line
+    do
+        echo "app_xxxx_g_"$line
+        echo "app_xxxx_g_"$line"_bucket"
+    done
+
   ```
-```
-  
 
 
-
-```

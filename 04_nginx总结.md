@@ -169,3 +169,11 @@ charset 设置我们的头文件中的默认的字符集
 open_file_cache_errors 指定了当搜索一个文件时是否缓存错误信息，也包括再次给配置中添加文件。我们也包括了服务器模块，这些是在不同文件中定义的。如果你的服务器模块不在这些位置，你就得修改这一行来指定正确的位置。
 ```
 
+## 5、keepalive + nginx
+
+```shell
+194,195(195作为master，keepalive和nginx均安装)，其中虚拟ip 29绑定到195机器上;
+include /etc/nginx/conf.d/*.conf; (conf.d下*.conf)
+
+```
+

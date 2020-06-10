@@ -94,6 +94,21 @@ partitions： (分区数0-9)，不指定则会使用broker(server.properties)中
   依分区的原子计数器（atomic counter），这个计数器可以同分区id以及节点id结合起来唯一的指定一条消息。
   Zookeeper主要用于在集群中不同节点之间进行通信。
   
+  
+  sync  #kafka同步生产者 :生产者写一条消息，立马发送至某个分区
+  async #kafka异步生产者 :生产者写一条消息，先是写到某个缓冲区，这个缓冲区的数据还没写到broken集群的某个分区时，它就返回到client了。
+  topic的offset的备份份数。建议设置更高的数字保证更高的可用性。
+  default.replication.factor消息的备份数，设置2的话(node1 p0,p1; node2 p1,p2; node3 p0,p2)
+  # 消息的顺序:默认同一分区的消息是有序的。分区方式：
+  1)指定分区
+  2)不指定分区，有指定key 则根据key的hash值与分区数进行运算后确定发送到哪个partition分区
+  3)不指定分区，不指定key，则轮询各分区发送
+  发送者发消息：
+  Producer发送消息到broker时，会根据Paritition机制选择将其存储到哪一个Partition。
+  
+  # 消费者消费消息：
+  offset保存至__consumer_offsets
+  同一Topic的一条消息只能被同一个Consumer Group内的一个Consumer消费，但多个Consumer Group可同时消费这一消息。
   ```
 
   ![06_kafka分区](./image/06_1kafka消息.png)
