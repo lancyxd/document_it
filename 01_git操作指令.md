@@ -19,6 +19,14 @@ git add，这样把其添加上去，这样gitcommit才会看到
 git commit提交至本地，如果没有变动，可以不用提交
 git pull拉下来和别人代码合并
 git push 上交代码至服务器
+
+# HEAD detached at 原因： 
+git checkout b311296ad9e25f12551c2d38adfc37516ac21c83   // HEAD指针没有指向任何的branch，而是指向了一个commit
+
+正常情况下 head指向一个branch，而branch又指向一个commit
+
+git checkout sit  //切换到远端sit分支
+git checkout -b 分支名  // 避免这个状态
 ```
 
 ## 2、命令详解及举例
