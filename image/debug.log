@@ -1,0 +1,11 @@
+[0516/221719.364:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0516/221719.368:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0516/221719.369:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0516/221719.369:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0516/221720.665:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0516/221720.676:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0516/221720.676:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0516/221720.676:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0523/163409.058:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: 管道已结束。 (0x6D)
+[0523/163500.646:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: 管道已结束。 (0x6D)
+[0523/163523.952:ERROR:registration_protocol_win.cc(84)] TransactNamedPipe: 管道已结束。 (0x6D)
