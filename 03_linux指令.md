@@ -19,6 +19,9 @@
   fuser -mv  /data/xxx/lxx/project  # 查看谁在使用资源，占用的进程，-m显示所有文件系统和块设备；-v 详细输出
   fuser -mvk /data/xxx/lxx/project # 杀掉占用的进程
   sudo umount project 解除挂载
+  
+  mount /dev/vdb /app #挂载至app目录下
+  mkfs.xfs /dev/vdb  # 格式化磁盘  （如果挂载失败，需要格式化该磁盘）
   ```
 
   ```shell
@@ -59,8 +62,13 @@
   ps -ef|grep hostmanger 
   tcpdump -iany -Xs0 port 8090 # 抓包命令(注意查看握手进程)
   
-  
-  
+  sar -n DEV 1
+  time ./es_to_couchbase news9 news_test http://127.0.0.1:9200 http://127.0.0.1:8091 >/dev/null  # time 记录时间执行时间，>/dev/null 重定向为null，节约时间
+  ps -ef|grep node  # 查看node进程，kill掉该进程。 F12查看network或者开发者工具查看network;
+  cat sync_server.log.170426-13|grep "BroadcastConsumer para error"|wc -l
+  ifconfig eth0|grep -E "([0-9]{1,3}\.){3}[0-9]" # 输出ip地址
+  grep   '2009-09-27 1[0-1]' # 过滤10点至11点的日志
+  cat test2.txt |grep -E "hello|world" # 显示包含hello或者world字符的内容行
   ```
 
   
@@ -426,6 +434,7 @@ tcp.flags==0x011
   grep '[0-9]\{4\}-[0-9]\{7\}' 1.txt   # 电话号码0370-5471668
   grep '[0-9]\{11\}' 1.txt             # 电话号码17692691946
   grep -n '[0-9]\{6\}$' datafile # 显示工资六位数，在每行的尾部
+  grep 127.0.0.1 ./ -r -n  # 过滤当前目录的127.0.0.1
   ```
 
 - **awk：**根据内容分析并处理，用于文本处理的语言（取行，过滤），支持正则。对于grep的查找，sed的编辑，awk在对数据分析并生成报告时，显得尤为强大
@@ -449,7 +458,7 @@ tcp.flags==0x011
   ifconfig |grep -o "[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*"	# 只显示被模式匹配到的字符串
   cat search.log|grep HANDLE_LOG|awk -F ":" '{print $6}'  |awk -F "," '{print $1}'| sort -r -n 
   
-   sort -n -r -k 7 -t ' ' 11.txt  # 逆序 -r， -k指定列数
+  sort -n -r -k 7 -t ' ' 11.txt  # 逆序 -r， -k指定列数
   ```
 
 - **sed：** sed自动编辑一个或多个文件（非交互式编译文件），简化文件的反复操作。
@@ -574,7 +583,7 @@ tcp.flags==0x011
   每年执行         0 0 1 1 *
   
   每隔10天执行一次命令 0 0 */10 * * /etc/init.d/apache2 restart
-  
+  每天零点执行该脚本  */1 * * * * /bin/sh /user/view.sh
   # crontab举例demo：(建立root用户的定时任务)
   1)crontab -e 按i进入编辑模式，0 0 */20 * * /app/ddtest/dellog.sh，保存。（每隔20天执行一次）
   2)查看刚刚输入的定时任务 crontab -l 或 cat /var/spool/cron/root

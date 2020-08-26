@@ -14,6 +14,8 @@
 
 [Elasticsearch 7.x 最详细安装及配置](https://www.cnblogs.com/Alandre/p/11386178.html)
 
+[ElasticSearch 7.8.1集群搭建](https://www.cnblogs.com/chenyanbin/p/13493920.html)
+
 备注：目前安装的版本为 7.8.0版本
 
 ```shell
@@ -45,6 +47,30 @@ vi bin/elasticsearch 修改elastic的启动脚本文件，将其改为自带的j
 else
     JAVA=`which java`
 fi
+
+
+备注： 
+groupadd elsearch    创建组
+useradd elsearch –g elsearch –p elasticsearch  （-g用户名或id，-p密码）  useradd -m -g elsearch elsearch
+chown -R elsearch:elsearch elasticsearch-7.8.0（将该文件夹下的文件拥有者变更）
+
+root用户下: 
+vi /etc/sysctl.conf 
+vm.max_map_count=655360
+sysctl -p
+
+从节点无法加入集群？
+出错的原因为，复制时也把data目录下的数据复制了一份。删除复制过来的data目录下的数据，再次启动时启动成功。
+
+# es7.x之后新增的配置，写入候选主节点的设备地址，在开启服务后可以被选为主节点
+discovery.seed_hosts: ["127.0.0.1:9300", "127.0.0.1:9400", "127.0.0.1:9500"]
+
+# es7.x之后新增的配置，初始化一个新的集群时需要此配置来选举master
+cluster.initial_master_nodes: ["node-1", "node-2", "node-3"]
+
+# 安装成功测试指令
+curl -u 'elastic:es123456'  127.0.0.1:9200  # elastic 加密后验证
+curl http://127.0.0.1:9200  
 ```
 
 ### 2  [kibana 插件安装详解](https://www.elastic.co/cn/downloads/kibana)
@@ -179,6 +205,52 @@ npm install
 npm run build
 npm -v
 ```
+
+### 7 新版本特性（对比es2.4版本，es7.8版本新特性）
+
+[免费安全功能全景认知]([https://blog.csdn.net/wojiushiwo987/article/details/90554761?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522159548849219724811807244%2522%252C%2522scm%2522%253A%252220140713.130102334.pc%255Fall.%2522%257D&request_id=159548849219724811807244&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v3~rank_business_v1-2-90554761.ecpm_v3_rank_business_v1&utm_term=elastic%E5%AE%89%E5%85%A8%E7%AF%87&spm=1018.2118.3001.4187](https://blog.csdn.net/wojiushiwo987/article/details/90554761?ops_request_misc=%7B%22request%5Fid%22%3A%22159548849219724811807244%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=159548849219724811807244&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v3~rank_business_v1-2-90554761.ecpm_v3_rank_business_v1&utm_term=elastic安全篇&spm=1018.2118.3001.4187))
+
+```shell
+# kibana 探索
+https://www.elastic.co/guide/en/kibana/7.8/introduction.html    kibana面板学习 (暂时pass)
+
+# Kibana多用户创建及角色权限控制 
+Stack Management权限管理和设置  (针对不同用户只能查看各自系统的索引文件：http://www.mamicode.com/info-detail-2764620.html )
+创建系统app1index-log和app2index-log角色，选择对应的索引文件，分配对应的权限read (Security - Roles 创建角色)
+创建两个用户 app1index/app1index（用户名/密码），app2index/app2index, 然后分配对应系统角色和kibana_user角色 (Security - Users)
+
+# 监控功能
+????
+
+# es gosdk 版本管理工具的不同  https://github.com/olivere/elastic
+
+# xpack安全探索 （7 .1版本：基础安全免费。Elastic Stack安全功能免费提供）
+https://www.elastic.co/guide/en/elasticsearch/reference/7.8/security-api.html
+https://www.elastic.co/guide/en/elasticsearch/reference/7.8/index.html#
+1) 安全相关
+GET /_security/_authenticate  # 查看权限
+POST /_security/realm/default_file/_clear_cache?usernames=rdeniro,alpacino  # 指定用户名退出选定用户
+GET /_security/privilege/_builtin # 检测内置特权
+2) 权限应用
+PUT /_security/privilege
+{
+  "myapp": {
+    "read": {
+      "actions": [ 
+        "data:read/*" , 
+        "action:login" ],
+        "metadata": { 
+          "description": "Read access to myapp"
+        }
+      }
+    }
+} 
+
+
+# string格式(text   keyword不分词) ， 移除名为 ik 的analyzer和tokenizer,请分别使用 ik_smart 和 ik_max_word
+```
+
+
 
 
 
