@@ -1,5 +1,7 @@
 ##  1、redis命令
 
+redis指定配置文件启动： redis-server /var/data/redis/redis.conf &
+
 [Redis 命令参考](http://redisdoc.com/index.html)
 
 ```shell
@@ -336,3 +338,4 @@ redis-benchmark -n 100000 -q script load "redis.call('set','foo','bar')" //只�
 [redis加锁的几种实现](https://blog.csdn.net/mojiezuo123/article/details/81205773)
 
 [Redis的8大应用场景](https://cloud.tencent.com/developer/article/1415674)
+

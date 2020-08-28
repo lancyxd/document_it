@@ -155,7 +155,7 @@ mysql -u用户名 -p密码 数据库名 < 数据库名.sql
   `desc` 反引号：为区分保留字和普通个字符引入的符号;表名，字段名等用反引号;字符串用单引号
   ```
 
-- **索引：** 是用来快速的寻找那些具有特定记录的值   ￥
+- **索引：** 是用来快速的寻找那些具有特定记录的值   
 
   `优点：索引大大减少了服务器需要扫描的数据量；索引可以帮助服务器避免排序和临时表；索引可以将随机IO变为顺序`
 
@@ -200,13 +200,19 @@ mysql -u用户名 -p密码 数据库名 < 数据库名.sql
 - **sql注入例子：**攻击者把SQL命令插入web表单的输入域或页面请求的字符串，欺骗服务器执行恶意的sql命令
 
   ```mysql
-  
-  
+  # 攻击注入演示  https://xie.infoq.cn/article/b85ef345162c461e630e96895
+  select *from index_info where appid=10001;  # 可迅速找出对应条件的数据
+  select * from index_info where appid=10001 or 1 = 1 ; # sql条件恒为真 （请求是设置成10001 or 1 = 1）
+  select * from course where student_id = 4 union select 1,1,version(),1;
+  select * from course where student_id = 4 union select 1,1,database(),1;
+  select * from course where student_id = 4 union select 1,1, (SELECT GROUP_CONCAT(schema_name) FROM information_schema.schemata) schemaName,1;
   ```
 
 - **防止sql注入:** ：检查变量类型和格式；过滤特殊字符；绑定变量，使用预编译语句；数据库信息加密安全。
 
   ```sql
+  sql预编译： sql = "select id,course_id,student_id,status from course where student_id = ?"
+  确认每种数据的类型，比如数字，数据库则必须使用int类型来存储。
   永远不要信任用户输入，要对用户的输入进行校验，可以通过正则表达式，或限制长度，对单引号和双"-"进行转换等。
   永远不要使用动态拼装SQL，可以使用参数化的SQL或者直接使用存储过程进行数据查询存取。
   永远不要使用管理员权限的数据库连接，为每个应用使用单独的权限有限的数据库连接。
@@ -253,9 +259,19 @@ mysql -u用户名 -p密码 数据库名 < 数据库名.sql
 
 ### 4.5聚簇索引和非聚簇索引
 
+聚簇索引：数据存储与索引放到一块，找到索引也就找到了数据。
+
+非聚簇索引：数据存储和索引分开，索引的叶子节点指向数据的对应行。
+
 `聚簇索引的叶节点就是数据节点，而非聚簇索引的页节点仍然是索引检点，并保留一个链接指向对应数据块`
 
 [聚簇索引与非聚簇索引（也叫二级索引）](https://www.jianshu.com/p/fa8192853184)
+
+ [为什么 Mysql 索引非得是 B+ 树](https://xie.infoq.cn/article/2174e0a1de0a6414be6a8e5d9)
+
+[图解 MySQL 索引：B-树、B+树](https://mp.weixin.qq.com/s?__biz=MzUzMTA2NTU2Ng==&mid=2247494831&idx=3&sn=a11828b29fffd75a11a41c8903d6f6a3&chksm=fa4a931ecd3d1a084b091e3e74043623a4ae72a8d56a1967a36b874a0d4b827ac4333c06181a&scene=27#wechat_redirect)
+
+B+树的数据都存在叶子节点上，非节点上只需要存关键字（在Mysql中一般是主键，而不用带一行数据）。这样在一个页中就可以存入大量的非叶子节点（也就是更多的主键），如此可以快速定位到指定的数据，然后如果当前页中没有再查少量的几次（或一次）就行了。
 
 ### 4.6mysql性能优化
 
