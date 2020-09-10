@@ -619,6 +619,19 @@ tcp.flags==0x011
 
 Linux中默认的shell是`/bin/bash或/usr/bin/bash`，流行的shell有ash、bash、ksh、csh、zsh
 
+软链接和硬链接有什么区别?类似于windos快捷方式。
+软链接是文件名的链接，可以驻留在不同的文件名中。硬链接链接到文件的inode，并且必须并且必须与文件的文件系统相同。删除原始文件会使软链接处于非活动状态（断开链接），但不会影响硬链接（硬链接仍将访问该文件的副本）
+
+linux传递和访问脚本参数?
+./test.sh arg1 arg2      脚本内部$1、$2分别与arg1、arg2对应; $#传递给脚本的参数计数
+sed -n '5,$p' file1|sed '/MNO/s/ABC/DEF/'  # 给定一个文件，将所有出现的单词ABC替换为DEF，从第 5 行直到结尾仅包含单词MNO
+tail +99 file1 | head -1  # 找文件第99行
+sed -n'10p'file1 #打印10行
+uptime # 查看程序运行了多久
+僵尸进程？进程已死亡，但其退出状态仍未被父进程选中。
+
+
+
 101个shell脚本](https://blog.51cto.com/zero01/2046242)
 
 ![shell图片](./image/04_1shell图片.png)
@@ -698,7 +711,7 @@ for i in $(seq 5) ; do echo $i;done
 for i in $(seq 5 -1 1) ; do echo $i;done
 for i in $(seq 6 -2 1) ; do echo -en $i;done # -n不换行输出, -e处理特殊字符
 for i in $(seq 5 -1 1) ; do echo -en "\b$i";sleep 1;done # \b 删除前一个字符
-
+for i in {1..10}; do echo $i; done  # 输出1至10
 # 
 arch # x86_64 显示机器的处理器架构 
 uname -m

@@ -1,4 +1,4 @@
-### 1  postman接口测试
+### 1  postman概述
 
 `Postman在发送网络HTTP请求方面可以说是Chrome插件类产品中的代表产品之一`
 
@@ -49,7 +49,7 @@ api接口重点关注点：（请求和响应）
 
 ### 2  postman项目实战和关键点
 
-参考书籍： <<接口自动化测试持续集成 Postman+Newman+Git+Jenkins+钉钉>>
+**参考书籍： <<接口自动化测试持续集成 Postman+Newman+Git+Jenkins+钉钉>>**
 
 #### 2.1 项目3w
 
@@ -61,7 +61,7 @@ api接口重点关注点：（请求和响应）
 4 环境变量导入 storm-test.postman_environment.json  和 collection导入 storm.postman_collection.json 
 
 # 单个请求执行步骤
-1 设置params，req body， http://{{domain}}/getuser?userid=1  # {{domain}}引用环境变量中的域名
+1 设置params，req body， http://{{domain}}/getuser?userid=1  #  {{domain}}引用环境变量中的域名
 2 在Tests中构造测试点，这里选择验证Response响应和预期值一致。
 3 单击send
 4 查看测试结果
@@ -135,6 +135,33 @@ pm.expect(jsonData.value).to.equal(100)
 
 
 ### 3 配置Jenkins自动化测试任务
+
+`借助于newman执行定时任务，需安装nodejs和newman`
+
+```shell
+# nodejs安装
+node -v
+npm -v
+
+# 安装newman
+npm install newman
+
+# 自动化测试步骤，以列表信息呈现结果
+1) 导出测试集 xxx.json
+2) 执行文件 newman run D:\xxx.json -e D:\百度ip环境 
+
+常用参数： -e 环境变量文件  -d 数据驱动文件  -g 全局变量文件 -n 迭代次数  -r 生成测试报告类型，这里生成html格式报告
+
+# jekins定时构建，执行任务：  https://www.cnblogs.com/gsxl/p/12147110.html
+设定执行时间  # 定时器构建语法，五星隔开大法：* * * * *  分钟 时 一个月的第几天 第几月 一周的第几天
+粘贴执行命令
+console output查看运行结果
+
+```
+
+
+
+
 
 1) 配置构建任务，创建jenkins任务
 
