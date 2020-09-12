@@ -770,3 +770,14 @@ cat ./gid.txt | while read line
   ```
 
 
+
+
+
+**备注：提升权限**
+
+sudo -i 运行结果 PWD=/root
+sudo su 运行结果 PWD=/home/用户名
+
+ll /apps/svr/xxx/bin/
+
+echo "apps ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers      # sh文件内容

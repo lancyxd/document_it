@@ -1,0 +1,132 @@
+__init__.py 文件的作用是将文件夹变为一个Python模块,Python 中的每个模块的包中，都有__init__.py 文件。
+
+一  unittest  ： ( 测试脚手架  测试用例  测试套件  测试运行器)
+https://www.jianshu.com/p/3aad32ed83bf?from=timeline
+https://docs.python.org/zh-cn/3/library/unittest.html 官方文档
+https://www.cnblogs.com/yufeihlf/p/5707929.html#test1     unittest单元测试框架总结 
+
+ setUp() 和 tearDown() 方法，可以设置测试开始前与完成后需要执行的指令
+ 测试用例以test开头，名字如（test_case1 or testAdd ）
+ unittest.main() 提供了一个测试脚本的命令行接口
+ @unittest.skip('暂时跳过测试用例3的测试')
+
+python cs_3.py  
+python -m unittest study_cs/cs_3.py  # 测试模块可以通过制定文件路径测试
+python -m unittest cs_3 cs_1  # 测试模块 ( 你可以传入模块名、类或方法名或他们的任意组合 )
+python -m unittest cs_3.IntegerArithmeticTestCase # 测试类
+python -m unittest cs_3.IntegerArithmeticTestCase.testAdd # 测试类的方法
+python -m unittest -v cs_3 # 在调用测试脚本时添加 -v 参数使 unittest.main() 显示更为详细的信息
+python -m unittest # 探索性测试
+python -m unittest -h # 命令行选项
+
+在unittest中复用旧的测试代码 ???
+
+https://blog.csdn.net/z594934262/article/details/104427652   ???
+下载geckodriver.exe 放到Firefox的安装目录下，如：（D:\火狐\Mozilla Firefox）;
+将火狐安装目录（D:\火狐\Mozilla Firefox）添加到环境变量path中;
+重启pycharm;
+
+
+selenium用法   https://blog.csdn.net/c406495762/article/details/72331737
+
+二 Django框架这个可以做自动化管理平台  python web framework        https://docs.djangoproject.com/en/3.0/    ???
+基于 MVC 模型， 即 Model（模型）+ View（视图）+ Controller（控制器）设计模式。
+MVC模式使后续对程序的修改和扩展简化，并且使程序某一部分的重复利用成为可能。
+
+
+https://github.com/django/django.git 
+https://www.runoob.com/django/django-tutorial.html
+
+查看版本: django.get_version()            python -m django --version
+window下mportError No module named django.core解决方案 ：django-admin.exe (linux采用 )
+HelloWorld/__init__.py: 一个空文件，告诉 Python 该目录是一个 Python 包
+
+生成项目: django-admin startproject mysite 
+启动:   python manage.py runserver 0.0.0.0:8000
+生成app项目：python manage.py startapp polls
+
+三 robotframework   (Robot Framework如果您想使用Python进行测试自动化工作，最好的选择就是Robot Framework）
+https://robotframework-userguide-cn.readthedocs.io/zh_CN/latest/GettingStarted/Introduction.html  # 中文文档
+https://www.jianshu.com/p/c3a9d20db4e5  # robotframework官方入门教程
+https://testerhome.com/topics/20852     # lyw advice
+
+https://www.cnblogs.com/leozhanggg/p/11121980.html # 测试概述
+
+'''
+1 安装配置 ： https://www.jianshu.com/p/9dcb4242b8f2
+pip install robotframework
+pip install wxpython   # 不安装则无法运行 RIDE 编辑器
+pip install robotframework-ride  # 安装 RIDE 编辑器   (自己创建快捷方式)
+
+pip install robotframework-seleniumlibrary  # 用于进行 Web 自动化测试
+pip install robotframework-appiumlibrary  # 用于进行 app 自动化测试
+pip install robotframework-requests  # 用于进行接口自动化测试      >>>
+pip install robotframework-autoitlibrary  # 用于进行 Windows GUI 自动化测试（专用于 Windows 系统，安装时需要管理员权限）
+pip install robotframework_databaselibrary # 数据库相关库
+''''
+
+chromedriver 下载  版本选择: 
+如何为Chrome配对chromedriver: https://zhuanlan.zhihu.com/p/110274934
+chromedriver当置到改目录下    E:\work\python\src\python36\Scripts (windows 环境变量已配置好)
+驱动下载： 
+http://npm.taobao.org/mirrors/chromedriver/
+https://ftp.mozilla.org/pub/firefox/releases/
+
+2 Robot Framework IDE (RIDE) 编辑器的基本使用： ( 添加库: 点击最右侧 Library 按钮即可 )
+创建测试项目RF_DEMO 
+	创建测试套件 Suite 
+		创建测试用例 Case1
+
+3 pycharm内置intelliBot插件
+https://blog.csdn.net/qq_32327737/article/details/96976935  Python+robot+selenium自动化初识: 相关配置：python环境、pythoncharm、pip install robotframework、intelliBot 该插件是rf执行用例脚本的一个插件、
+常见问题解决方案:
+https://blog.csdn.net/qq_15228737/article/details/89647525
+https://blog.csdn.net/bug_rabbit/article/details/73161453
+
+1) 语法 (HTML 、TSV 、文本txt、 管道|分隔)
+一个文件中的用例数量没有上限, 但是一般建议不要超过10个, 除非是使用 data-driven approach 的时候. 
+
+https://www.jianshu.com/p/7751e46f37d1
+${TEMPDIR}	操作系统临时目录的绝对路径        // C:\Documents and Settings\liuxd9\Local Settings\Temp
+Library	 OperatingSystem	WITH NAME	TestLibOS  // 起别名
+Robot Framework变量不区分大小写，并且忽略空格和下划线。但是，建议使用带有全局变量的所有大写字母
+标量, 列表和字典, 分别使用语法格式 ${SCALAR}, @{LIST} 和 &{DICT} 
+
+.robot文件注释:   // https://www.pythonf.cn/read/410
+
+踩坑合集: https://www.jianshu.com/p/3286acc22011
+
+3 例子实践:
+1) 接口自动化
+https://www.jianshu.com/p/8a0ba0a13e4b
+
+
+
+
+
+四 安装pycharm及相关插件
+https://blog.csdn.net/hy245120020/article/details/50776197  使用pycharm配置python的virtualenv环境
+python -m pip install --upgrade pip
+pip install -U selenium  # 源码包位置 E:\work\python\src\python36\Lib\site-packages
+pip install Django
+pip install -U Django # 升级Django
+
+pip install selenium  #selenium安装，使用pip安装  
+
+
+
+
+
+
+
+>>>POST提交数据的方式: application/x-www-form-urlencoded application/json multipart/form-data text/xml
+
+
+
+
+  
+
+
+
+
+

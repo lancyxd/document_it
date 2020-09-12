@@ -96,7 +96,14 @@
 
   ![复杂联表查询](./image/02_1联表查询.png)
 
----
+
+
+With ON DUPLICATE KEY UPDATE, the affected-rows value per row is 1 if the row is inserted as a new row and 2 if an existing row is updated.(插入时影响1行 ; 更新时影响2行)
+
+curl -X HEAD -i  http://127.0.0.1:8081/xxx.dict
+
+ETag: W/"189-1587885404000"
+Last-Modified: Sun, 26 Apr 2020 07:16:44 GMT
 
 ## 2、mysqldump数据备份和还原
 

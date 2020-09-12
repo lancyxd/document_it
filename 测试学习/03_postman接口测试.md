@@ -1,3 +1,5 @@
+项目 登录  场景id
+
 ### 1  postman概述
 
 `Postman在发送网络HTTP请求方面可以说是Chrome插件类产品中的代表产品之一`
@@ -131,6 +133,41 @@ var jsonData =pm.response.JSON()
 pm.expect(jsonData.value).to.equal(100)
 }) # JSON value check（检查响应体的JSON值）
 ```
+
+#### 2.3 脚本js
+
+```javascript
+var date =new Date(); // 构造当前日期
+var year = date.getFullYear(); // 获取年（4位，1970-xxxx）
+var month = date.getMonth()+1; // 获取月份（获取当前月份(0-11,0代表1月，所以要+1)）
+var day = date.getDate(); //获取当前日(1-31)
+
+// 把生成的数据set给postman
+pm.environment.set("year", year);
+pm.environment.set("month", month);
+pm.environment.set("day", day);
+
+console.log(date)  // 控制台输出一下原始日期
+
+//对所有的post请求体加密
+if('POST' == request.method) {
+    const echoPostRequest = {
+        url: request.url,
+        method: 'POST',
+        header:'Content-Type:application/json',
+        body: encrypt(JSON.stringify(request.data), "aaaaaaaaaaaaaaaa")
+    };
+    pm.sendRequest(echoPostRequest, function (err, res) {
+        console.log(res.json());
+    });
+}
+
+
+ 
+
+```
+
+
 
 
 
