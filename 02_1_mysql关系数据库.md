@@ -194,6 +194,11 @@ mysql -u用户名 -p密码 数据库名 < 数据库名.sql
 
 ## 4、mysql高频题
 
+
+mysql经典面试题： https://zhuanlan.zhihu.com/p/23713529
+
+​								   https://www.jianshu.com/p/977a9e7d80b3
+
 ### 4.1 sql注入及避免方式 
 
 参考链接：[SQL注入攻击原理以及基本方法](https://blog.csdn.net/qq_34858648/article/details/52750038)

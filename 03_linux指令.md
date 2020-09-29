@@ -58,6 +58,7 @@
   netstat -nat # 查看状态
   netstat -nat|grep -i "80"|wc -l # 统计80端口连接数
   netstat -na|grep ESTABLISHED|wc -l # 统计已连接上的，状态为“established
+  netstat -nap | grep SYN_RECV
   
   ps -ef|grep hostmanger 
   tcpdump -iany -Xs0 port 8090 # 抓包命令(注意查看握手进程)
@@ -459,6 +460,12 @@ tcp.flags==0x011
   cat search.log|grep HANDLE_LOG|awk -F ":" '{print $6}'  |awk -F "," '{print $1}'| sort -r -n 
   
   sort -n -r -k 7 -t ' ' 11.txt  # 逆序 -r， -k指定列数
+  sort src.txt|uniq 去除重复行
+  sort src.txt|uniq -u 查找非重复行
+  sort src.txt|uniq -d 查找重复行
+  sort file | uniq -c 统计行数
+  
+  awk '/aaa|ddd|ggg/' src.txt
   ```
 
 - **sed：** sed自动编辑一个或多个文件（非交互式编译文件），简化文件的反复操作。
