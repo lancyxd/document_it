@@ -25,7 +25,6 @@ CLASSPATH D:\professorsoftware\apache-jmeter-5.3\lib\ext\ApacheJMeter_core.jar
 
 3 jmeter插件安装  https://jmeter-plugins.org/install/Install/
 D:\professorsoftware\apache-jmeter-5.3\lib\ext  # 下载外部jar包存放位置
-
 ```
 
 ### 2 jmeter概述
@@ -370,9 +369,24 @@ jmeter -n -t test.jmx -l test.jtl -e -o /path
 
 windows下运行指令： jmeter.bat -n -t D:\jmeter\code\查询接口测试.jmx  -l test.jtl -e -o  D:\jmeter\code\  
 
+### 6 jmeter分布式测试原理及步骤
 
+jmeter的GUI模式下（Windows），最多支持300左右的模拟请求线程，再大的话，容易造成卡顿、无响应等情况，这是限于jmeter其本身的机制和硬件配置。支持分布式压测，将大量的模拟并发分配给多台压力机，来满足大流量的并发请求场景。
 
-### 6 jmeter常见问题及解决办法
+- **原理**
+
+选择一台作为管理机（Contorller或master），其他的机器作为测试执行的代理机（Agent或slave）；
+执行测试时，由Contorller通过命令行将测试脚本发给Agent，然后Agent执行测试（不需要启动GUI），同时将测试结果发送给Contorller；
+测试完成，可以在Contorller上的监听器里面看到Agent发来的测试结果，结果为多个Agent测试结果汇总而成；
+
+- 步骤
+修改管理机配置 remote_hosts=127.0.0.1,127.0.0.2:80,127.0.0.3:80  （其中127.0.0.2和127.0.0.3为Agent机的IP）；
+启动jmeter后，设置线程组、配置元件、取样器、监听器等原件，点击"运行-远程启动",可以选择远程启动一个Agent机，或者选择远程全部启动，这样，就可以进行分布式测试了。
+如果1S启动100个模拟请求，有5个Agent机，那么需要将脚本的线程数设置为20。
+
+  
+
+### 7 jmeter常见问题及解决办法
 
 ```shell
 # jmeter常见问题及管理办法
@@ -397,21 +411,13 @@ Stepping Thread Group 插件
 下载https://jmeter-plugins.org/downloads/old/JMeterPlugins-Standard.jar，包放在jmeter安装目录的jmeter-3.0\lib\ext路径下，重新启动jemter即可。
 
 # jmeter分布式测试
-jmeter的GUI模式下（Windows），最多支持300左右的模拟请求线程，再大的话，容易造成卡顿、无响应等情况，这是限于jmeter其本身的机制和硬件配置。支持分布式压测，将大量的模拟并发分配给多台压力机，来满足大流量的并发请求场景。
-1) 分布式测试原理
-选择一台作为管理机（Contorller），其他的机器作为测试执行的代理机（Agent）；
-执行测试时，由Contorller通过命令行将测试脚本发给Agent，然后Agent执行测试（不需要启动GUI），同时将测试结果发送给Contorller；
-测试完成，可以在Contorller上的监听器里面看到Agent发来的测试结果，结果为多个Agent测试结果汇总而成；
-2)分布式设置步骤
-修改管理机配置 remote_hosts=127.0.0.1,127.0.0.2:80,127.0.0.3:80  （其中127.0.0.2和127.0.0.3为Agent机的IP）；
-启动jmeter后，设置线程组、配置元件、取样器、监听器等原件，点击"运行-远程启动",可以选择远程启动一个Agent机，或者选择远程全部启动，这样，就可以进行分布式测试了。
-如果1S启动100个模拟请求，有5个Agent机，那么需要将脚本的线程数设置为20
+
 
 ```
 
 
 
-### 7 性能测试报告格式
+### 8 性能测试报告格式
 
 1)测试对象拓扑结构
 2)测试环境
