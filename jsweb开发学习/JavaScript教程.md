@@ -571,7 +571,7 @@ var obj = JSON.parse(text); // 使用js的内建函数JSON.parse() 来把这个�
   
   //存储数据：
   myObj = { name:"Bill Gates",  age:62, city:"Seattle" };
-  myJSON =  JSON.stringify(myObj);
+  myJSON =  JSON.stringify(myObj); // JavaScript 函数 JSON.stringify() 将它转换为字符串。
   localStorage.setItem("testJSON", myJSON);
   
   //接收数据：

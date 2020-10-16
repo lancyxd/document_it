@@ -7,9 +7,9 @@
 1 java jdk安装
 1）下载jdk: https://www.oracle.com/java/technologies/javase-downloads.html 
 2）设置环境变量：
-JAVA_HOME   D:\professorsoftware\javajdk
-path  D:\professorsoftware\javajdk\bin
-CLASSPATH D:\professorsoftware\javajdk\lib
+JAVA_HOME   D:\professorsoftware\javajdk  # jdk的安装路径
+path  D:\professorsoftware\javajdk\bin    # %JAVA_HOME%\bin;%JAVA_HOME%\jre\bin
+CLASSPATH D:\professorsoftware\javajdk\lib # .;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar
 3）查看是否安装成功:java -version
 
 2 jmeter安装和配置
@@ -121,25 +121,51 @@ Jmeter的所有任务都必须由线程处理，所有任务都必须在线程�
 
 #### 3.2 测试计划元件
 
-- **线程用户**
+测试计划(Test Plan)是使用 JMeter 进行测试的起点，它是其它 JMeter 测试元件的容器。
 
-  - **线程数**:模拟的用户数 200个线程就是模拟200个用户。
-  - **Ramp-Up Period(in seconds)**: 设置线程多长时间全部启动。若线程数为200，启动时长为10，则1秒需要启动20个线程。
-  - **循环次数（线程数的循环）**：每个线程发送的请求次数；若线程数为200 ，循环次数为10 ，总请求数：200*10=2000次；
+**名称：**为测试计划起一个有意义的名称；**注释：**测试计划的注释；
 
-- **取样器**：向服务器发送请求，记录响应信息，记录响应时间的最小单元，支持多种不同的取样器，如（http、ftp、tcp等）
+**用户定义的变量：**${变量名}引用,在需要https://www.hao123.com/时直接用${url}即可；
+
+**Add directory or jar to classpath**：向类路径即%JMETER-HOME%\lib中添加目录及jar包。
+
+![04_1jmeter测试计划.png](./img/04_1jmeter测试计划.png)
+
+- **线程组（名称：为线程组起名称）**
+
+  - **线程属性-线程数**:设置发送请求的用户数目，即并发数。模拟的用户数 200个线程就是模拟200个用户。
+
+  - **线程属性-Ramp-Up Period(in seconds)**: 设置线程多长时间全部启动。若线程数为200，启动时长为10，则1秒需要启动20个线程。
+
+  - **线程属性-循环次数（线程数的循环）**：每个线程发送的请求次数；若线程数为200 ，循环次数为10 ，总请求数：200*10=2000次；
+
+  - **调度器配置－持续时间**：测试计划持续多长时间，会覆盖结束时间。
+
+  - **调度器配置－启动延迟**：测试计划延迟多长时间启动，会覆盖启动时间。
+
+  ![04_2线程组.png](./img/04_2线程组.png)
+
+- **取样器**：向服务器发送请求，记录响应信息，记录响应时间的最小单元，支持多种不同的取样器，如（http、ftp、tcp等）。以http请求为例（名称；web服务器:协议、ip、端口等；同请求一起发送的参数：**需用到参数化和动态数据关联**；同请求一起发送的文件：可以制定同请求一起发送哪个文件；）。
+
+  ![04_3http请求.png](./img/04_3http请求.png)
 
 - **逻辑控制器**
 
-- **配置元件**
+  可以自定义jmeter发送请求的行为逻辑，它与sample结合使用可以模拟复杂的请求序列。
+
+  ![04_4逻辑控制器.png](./img/04_4逻辑控制器.png)
+
+  
+
+- **配置元件**：维护Sampler需要的配置信息，并根据实际的需要会修改请求的内容。我们主要在参数化中用到**CSV Data Set Config**。
 
   用于提供对静态数据配置的支持。CSV Date Set Config可以将本地数据文件形成数据池（Date Pool），而对应于HTTP Request Configuration和TCP Request Sample等类型的Configuration元件则可以修改这些Sample的默认数据等
 
 - **定时器**：用于操作之间设置等待时间，等待时间使性能测试中常用的控制客户端QPS的手段，jmeter定义了Constant Times、Constant Throughput Times、Guass Ramdon Times等不同类型的Times
 
-- **前置处理器**：实际请求发出之前对即将发出的请求进行特殊处理
+- **前置处理器**：实际请求发出之前对即将发出的请求进行特殊处理，常常用来修改请求的设置。
 
-- **后置处理器**：一般用来提取响应中的特定数据（类似loadrunner中的关联）
+- **后置处理器**：一般用来提取响应中的特定数据（类似loadrunner中的关联）。**主要在动态关联中，用到后置处理器的表达式。**
 
 - **断言**：用于检查测试中得到的响应数据等是否符合预期，Assertions一般用来设置检查点，用以保证性能测试过程中的数据交互与预期一致。
 
@@ -163,18 +189,31 @@ Jmeter的所有任务都必须由线程处理，所有任务都必须在线程�
 - 在线程组中至少有一个取样器
 - 测试计划中必须要有监听器
 
-#### 3.5 jmeter录制脚本
+#### 3.5 jmeter脚本制作
+
+##### 	3.5.1 jmeter录制脚本
 
 - **badboy录制**
 
-  - 安装badboy
+  -  [安装badboy](http://www.badboy.com.au)
 
   - 打开badbody，在地址栏输入录制地址，回车
+
   - 操作完成，点击停止记录，导出脚本（ save或者export to jmeter，将文件保存为jmeter的脚本格式：.jmx；启动jmeter，打开刚录制保存的文件，就可以进行测试了）。
 
-    在jmeter中打开已有jmx文件，选择文件路径，进行打开。
+    在jmeter中打开已有jmx文件，选择文件路径，进行打开。不需要的页面可以删掉或者禁用。
 
-- **利用jmeter自身代理录制**
+    ![04_5badboy录制.png](./img/04_5badboy录制.png)
+
+    **备注：**录制常见问题如下（`badboy脚本里设置好的东西（比如参数化、检查点）是不会带到jmeter里的，只能录制基本的东西，导入到jmeter里还需要重新调试`）
+
+    1）提示脚本错误，解决方案：直接点击脚本提示“是”即可；IE浏览器，在Internet选项>高级属性>浏览器标签>选中禁止脚本调试。
+
+    2）版本不一致：解决方案：排查badboy和jmeter版本不匹配，把badboy升级到最新版。
+
+    3）录制后的脚本，在导入Jmeter后会使线程组的循环次数失效：解决办法：先将循环控制器改成其他任一类型控制器，然后再改回来。
+
+- **利用jmeter自身代理录制（原生http代理服务器录制）**
 
   - 配置jmeter
     - 1 打开jmeter创建新的测试计划
@@ -188,9 +227,16 @@ Jmeter的所有任务都必须由线程处理，所有任务都必须在线程�
   
 - **安装浏览器插件实现脚本录制（ BlazeMeter 插件）**
 
-  - 
+##### 3.5.2 通过Fiddler抓包导出Jmeter脚本
 
-  
+  - 下载插件，将FiddlerExtensions.dll、FiddlerExtensions.pdb 放置到Fiddler的安装目录下的ImportExport里面。
+  - 抓包。
+  - 导出抓包请求为jmx格式，点击File，选择 Export Sessions ，根据需求选择 All Sessions 或者 Selected Sessions，在弹出框的下拉菜单中选择JMeter，然后保存即可。
+  - 在JMeter中打开jmx文件。
+
+  ##### 3.5.3 手写脚本
+
+1 添加测试计划 2 创建线程组 3 添加http请求 4 配置http请求 5 添加查看结果树 6 保存 xxx.jmx文件
 
 ### 4 jmeter接口测试回顾
 
@@ -316,10 +362,6 @@ $..book[2] 第2本书
 $..book[?(@.isbn)] 
 ```
 
-
-
-
-
 ### 5 jmeter命令行测试
 
 [linux模式下生成测试报告](https://www.cnblogs.com/imyalost/p/9808079.html)
@@ -409,13 +451,7 @@ listener作为一个收集sampler的结果数据和呈现结果的文件，其�
 # 阶梯式加压测试及jmeter相关插件
 Stepping Thread Group 插件
 下载https://jmeter-plugins.org/downloads/old/JMeterPlugins-Standard.jar，包放在jmeter安装目录的jmeter-3.0\lib\ext路径下，重新启动jemter即可。
-
-# jmeter分布式测试
-
-
 ```
-
-
 
 ### 8 性能测试报告格式
 
