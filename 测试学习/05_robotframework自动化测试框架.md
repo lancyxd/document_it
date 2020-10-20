@@ -1,4 +1,116 @@
-# 1 初始Robot Framework
+# 1 认识自动化测试
+
+- **引入自动化测试目的**：更高的质量+更高的效率。  提高产品质量，加快测试效率。
+
+- **自动化的必要性？**
+
+  降低成本；节省人力时间（自动化测试系统建立了，就可以重用这些测试）；自动化测试是推动CI（储蓄集成）和DevOps的基础；准确性和可靠性；模拟人工难以实现的测试手段；增强产品快速持续迭代发布的能力；衡量质量指标（还提供了测量产品代码质量指标的功能，例如代码覆盖率、技术债、代码语义检查等）
+
+- **手工测试和自动化测试区别？**
+
+  手工测试有较强的异常处理能力，通过人为的逻辑判断来校验当前的步骤是否正确，同时用例的执行具有一定的步骤跳跃性，能够步步跟踪，细致定位问题。
+
+  自动化测试执行的对象是脚本，能通过人为的逻辑判断校验当前的步骤是否正确，用例步骤之间关联性强，不像手工测试用例那么有跳跃性。
+
+  两个并不对立，属于互补状态。自动化测试可以把更多的时间和精力放在更有价值的测试中。
+
+- **自动化测试分类？**
+
+  从产品类型角度：PC端产品自动化测试；web端产品自动化测试；App移动端产品自动化测试。
+
+  从产品研发阶段角度：单元自动化；接口自动化；契约自动化测试、集成自动化测试、验收自动化测试。
+
+- **测试三层金字塔（由上到下）？**
+
+  1）UI测试：UI指的就是用户可以用肉眼看到的界面。原理：即基于页面元素的识别和定位来模拟用户行为。对于UI层自动化的开展，一般不建议做大规模的应用（原因：UI界面变化频繁；初期见效太慢；前端开发不规范，元素识别定位较困难）。
+
+  2）集成或接口测试：接口测试关注的重点更多在于数据（数据处理、数据状态、数据传递），对测试工程师的编码能力要求较高，一般接口自动化测试都会用Python、Java等语言开发。
+
+  3）单元测试：其对测试工程师的编码能力要求较高，要求测试工程师能看懂业务的实现代码。如Java有JUnit、testNG，Python有UnitTest、Pytest等。
+
+  `备注：UI层自动化测试关注的重点是用户的操作行为是否正确;集成或接口测试关注的重点是一个函数、类（方法）所提供的接口数据是否正确；单元测试关注重点在于代码的内部实现逻辑是否正确，例如一个if分支或一个for循环的实现。`
+
+- **什么项目适合自动化？**
+
+  项目变动少；项目周期足够长；项目资源足够；产品型项目（每个项目只改进少量的功能）；能够自动编译、自动发布的系统；回归测试；多次重复、机械性动作；需要频繁运行测试。
+
+- **做好自动化测试需具备的能力？**
+
+  业务知识储备；编码开发能力；熟悉被测系统；掌握一套自动化测试框架或工具（常见的开源自动化测试框架有Selenium、Appium、Robot Framework等）；善于学习，达到知其然必知其所以然；逻辑思维能力；
+
+- **自动化测试用途和使用场景？**
+
+  回归测试：能够很好的验证你是否引入了新缺陷，老的缺陷是否修改过来了。
+
+  冒烟测试：对产品主流程或环境服务连通性进行快速冒烟测试。
+
+  每日线上巡检：构建自动化测试每日巡检，用于每日实时监测线上产品重要功能的稳定性和可用性。
+
+  构造测试数据：构造生成大批量测试数据，为人工测试或其他（例如性能）测试提供数据上的便利。
+
+  固化资产：通过自动化测试可固化测试资产（流程、工具、代码、文档）。
+
+  建立测试与代码的覆盖联系：通过自动化工具能够确定测试用例的覆盖路径，确定测试用例集对程序逻辑流程和控制流程的覆盖。
+
+- **引入自动化测试目的**：更高的质量+更高的效率。  提高产品质量，加快测试效率。
+
+- **自动化的必要性？**
+
+  降低成本；节省人力时间（自动化测试系统建立了，就可以重用这些测试）；自动化测试是推动CI（储蓄集成）和DevOps的基础；准确性和可靠性；模拟人工难以实现的测试手段；增强产品快速持续迭代发布的能力；衡量质量指标（还提供了测量产品代码质量指标的功能，例如代码覆盖率、技术债、代码语义检查等）
+
+- **手工测试和自动化测试区别？**
+
+  手工测试有较强的异常处理能力，通过人为的逻辑判断来校验当前的步骤是否正确，同时用例的执行具有一定的步骤跳跃性，能够步步跟踪，细致定位问题。
+
+  自动化测试执行的对象是脚本，能通过人为的逻辑判断校验当前的步骤是否正确，用例步骤之间关联性强，不像手工测试用例那么有跳跃性。
+
+  两个并不对立，属于互补状态。自动化测试可以把更多的时间和精力放在更有价值的测试中。
+
+- **自动化测试分类？**
+
+  从产品类型角度：PC端产品自动化测试；web端产品自动化测试；App移动端产品自动化测试。
+
+  从产品研发阶段角度：单元自动化；接口自动化；契约自动化测试、集成自动化测试、验收自动化测试。
+
+- **测试三层金字塔（由上到下）？**
+
+  1）UI测试：UI指的就是用户可以用肉眼看到的界面。原理：即基于页面元素的识别和定位来模拟用户行为。对于UI层自动化的开展，一般不建议做大规模的应用（原因：UI界面变化频繁；初期见效太慢；前端开发不规范，元素识别定位较困难）。
+
+  2）集成或接口测试：接口测试关注的重点更多在于数据（数据处理、数据状态、数据传递），对测试工程师的编码能力要求较高，一般接口自动化测试都会用Python、Java等语言开发。
+
+  3）单元测试：其对测试工程师的编码能力要求较高，要求测试工程师能看懂业务的实现代码。如Java有JUnit、testNG，Python有UnitTest、Pytest等。
+
+  `备注：UI层自动化测试关注的重点是用户的操作行为是否正确;集成或接口测试关注的重点是一个函数、类（方法）所提供的接口数据是否正确；单元测试关注重点在于代码的内部实现逻辑是否正确，例如一个if分支或一个for循环的实现。`
+
+- **什么项目适合自动化？**
+
+  项目变动少；项目周期足够长；项目资源足够；产品型项目（每个项目只改进少量的功能）；能够自动编译、自动发布的系统；回归测试；多次重复、机械性动作；需要频繁运行测试。
+
+- **做好自动化测试需具备的能力？**
+
+  业务知识储备；编码开发能力；熟悉被测系统；掌握一套自动化测试框架或工具（常见的开源自动化测试框架有Selenium、Appium、Robot Framework等）；善于学习，达到知其然必知其所以然；逻辑思维能力；
+
+- **自动化测试用途和使用场景？**
+
+  回归测试：能够很好的验证你是否引入了新缺陷，老的缺陷是否修改过来了。
+
+  冒烟测试：对产品主流程或环境服务连通性进行快速冒烟测试。
+
+  每日线上巡检：构建自动化测试每日巡检，用于每日实时监测线上产品重要功能的稳定性和可用性。
+
+  构造测试数据：构造生成大批量测试数据，为人工测试或其他（例如性能）测试提供数据上的便利。
+
+  固化资产：通过自动化测试可固化测试资产（流程、工具、代码、文档）。
+
+  建立测试与代码的覆盖联系：通过自动化工具能够确定测试用例的覆盖路径，确定测试用例集对程序逻辑流程和控制流程的覆盖。
+
+# 2 初始Robot Framework
+
+[robotframework官网](https://robotframework.org/#examples)
+
+[robot framework中文文档最新版](https://robotframework-userguide-cn.readthedocs.io/zh_CN/latest/)
+
+## 2.1 Robot Framework概述
 
 基于python语言设计的、可扩展、关键字驱动模式的测试自动化框架。具备良好的扩展性（可支持xml-rpc服务扩展支持其它的常用编程语言，可同时测试各种类型的客户端或接口，可支持进行分布式测试执行）
 
@@ -14,13 +126,19 @@
 
   提供标签以分类来选择被执行的测试用例，使得测试用例的选择更加灵活。
 
-  支持web界面测试、web接口服务测试、GUI测试、多种终端测试。
+  功能全面，支持web界面测试、web接口服务测试、GUI测试、多种终端测试。
+
+  支持跨平台运行，如Windows、Linux、Mac OS。
 
   支持多种数据库操作，包括常用的关系数据库和非关系数据库。
 
   易于扩展自定义的lib库，可以通过Python或者Java等其他开发语言来动态扩展Lib库。
 
-  
+  易于集成，提供了命令行接口和基于XML的输出文件，支持持续集成（CI），如Jenkins、Maven等的集成。
+
+  强大的数据驱动，支持外部数据文件、变量文件、资源文件。
+
+  **不足：**自定义HTML报告较为麻烦；框架有自身的一套语法有一定的学习成本；不支持即时断点、逐行调试跟踪功能，调试时，无法像IDEA这类工具一样方便。
 
 - **robotframework组成**
 
@@ -28,10 +146,109 @@
 
   ![05_1rf组成.png](./img/05_1rf组成.png)
 
+- **RF基本库、扩展库和内建工具**
 
-## 1.1 如何创建一个自动化项目
+  *基本库*：如 Builtin：提供内置常用的关键字。String：用于生成、修改、验证字符串的库。
 
-**robotframe工具：** [RIDE](https://pypi.org/project/robotframework-ride) , 插件工具（pycharm下载 intelliBot 插件；jekins plugin等）。
+  *扩展库*：如 DatabaseLibrary：用于数据库测试的库，分为Java和Python两类库，一般默认是基于Python的库。HttpLibrary.HTTP：用于使用请求进行HTTP级别测试的库。Selenium2Library：使用Selenium 2的Web测试库，用于Web UI自动化测试。
+
+  *内建工具*：Libdoc：用于为测试库和资源文件生成关键字文档的工具。Testdoc：基于Robot Framework测试用例生成高层次HTML文档的工具。
+
+- **RF编辑器**： RIDE：独立的Robot Framework测试数据编辑器。
+
+## 2.2 RF自动化环境搭建
+
+[Robot Framework 自动化测试框架安装](https://www.jianshu.com/p/985331427cbe)
+
+[Robot Framework 安装配置](https://www.jianshu.com/p/9dcb4242b8f2)
+
+[使用pycharm编写和运行RF脚本](https://blog.csdn.net/CCGGAAG/article/details/77529724)
+
+**1）安装python**
+
+[Python安装包下载](https://www.python.org/downloads/)，一路next，安装完成后配置环境变量，将 <python_path> 和 <python_path>\Scripts 加入环境变量PATH系统变量中即可（C：\Python36和C：\Python36\Scripts添加到系统环境变量Path后面）
+
+**备注：**pip是一个安装和管理Python包的工具，通过pip来安装Python包十分简单。Python 2.7.9以上版本默认集成了pip。
+
+```shell
+# pip升级方法
+python -m pip install --upgrade pip
+pip install --upgrade pip
+pip install -U pip
+```
+
+**2）RF框架安装及第三方库安装**
+
+```shell
+# 安装RobotFramework, cmd窗口 pybot --version , 如成功显示版本号，则表示robot安装成功
+pip install robotframework  # 通过pip安装最新版本
+pip install robotframework==3.0.4 # 通过pip安装指定版本
+pip install -U robotframework  # 通过pip升级到最新版本
+
+# RobotFramework源码安装： 下载tar.gz源码包并解压，从命令行进入解压后的目录（有setup.py文件的那一层），输入命令python setup.py install
+
+
+# 安装第三方库
+pip install wxpython   # 不安装则无法运行 RIDE 编辑器
+pip install robotframework-ride  # 安装 RIDE 编辑器 （一般Ride.py会自动被安装到python的Scripts目录下）
+pip install robotframework-seleniumlibrary  # 用于进行 Web 自动化测试
+pip install robotframework-appiumlibrary  # 用于进行 app 自动化测试
+pip install robotframework-requests  # 用于进行接口自动化测试      >>>
+pip install robotframework-autoitlibrary  # 用于进行 Windows GUI 自动化测试（专用于 Windows 系统，安装时需要管理员权限）  ??? 
+
+# 其它包下载参考
+python -m pip install --upgrade pip
+pip install -U selenium  # 源码包位置 E:\work\python\src\python36\Lib\site-packages
+pip install Django
+pip install -U Django # 升级Django
+```
+
+**3） 浏览器驱动下载**（多用谷歌和火狐）
+
+chromedriver 下载  版本选择:  [如何为Chrome配对chromedriver](https://zhuanlan.zhihu.com/p/110274934)
+chromedriver当置到改目录下    E:\work\python\src\python36\Scripts (windows 环境变量已配置好)
+
+驱动下载： 
+http://npm.taobao.org/mirrors/chromedriver/
+https://ftp.mozilla.org/pub/firefox/releases/
+
+**4）pycharm插件配置** （Robot Framework Support 暂未启用; 目前仅启用了 intelliBot）
+
+```shell
+Robot Framework support plugin for IntelliJ Idea
+
+https://blog.csdn.net/hy245120020/article/details/50776197  使用pycharm配置python的virtualenv环境
+https://www.cnblogs.com/Huangzena/p/11772650.html  Pycharm+Rf框架的自动化
+
+1）pycharm下载 intelliBot 插件 : Settings——Plugins——intelliBot, 重启
+2）配置RF的文件类型识别: 编辑器——文件类型——Robot Feature——添加*.txt
+3）配置suite和case的运行配置：在运行脚本时，可以单独运行一个用例，也可以直接运行一个用例集合suite。
+所以我们这里要配置两个，打开File——settings——tools——external tools：
+配置suite
+Robot Run TestSuite
+-d results $FileName$
+$FileDir$
+
+设置case
+Robot Run SingleTestCase
+-d results -t "$SelectedText$" ./
+$FileDir$
+
+4）导入已编写好的rf脚本，即可运行： 右键调出编辑菜单，然后通过external来运行
+5）查看测试报告：
+```
+
+
+
+
+
+
+
+
+
+## 2.3 如何创建一个自动化项目
+
+**robotframe工具：** [RIDE](https://pypi.org/project/robotframework-ride) , 插件工具（pycharm下载 intelliBot 插件；jekins plugin等）。**RIDE是Robot Framework框架官方提供的GUI工具。**
 
 - **ride安装方法**
 
@@ -51,7 +268,7 @@
   
   4）测试用例的执行：勾选我们的测试用例，单击菜单栏Tools→Run Tests（或者直接快捷键F8）来执行
 
-## 1.2 Robot Framework基础关键字
+## 2.4 Robot Framework基础关键字
 
 - **如何搜索rf关键字**
 
@@ -167,25 +384,27 @@ Create Http Context：关键字其作用相当于创建了一个HTTP调用的环
   [在线http模拟示例](https://getman.cn/)
 
   ```shell
+  
+  ```
 # 示例
   *** Settings ***
   Library           RequestsLibrary
-  
+
   *** Variables ***
   ${vt}             robot    # 具体的变量
-  
+
   *** Test Cases ***
   rf_http_requestlib_case
       Create Session    RobotFramework    http://robotframework.org
       ${resp}=    Get Request    RobotFramework     /#libraries
-  
+
   rf_http_requestlib_case2
       ${headers}    Create Dictionary    Accept=text/html,application/xml;q=0.8
       ${param}    Create Dictionary     tel=18680673197
       Create Session    tcc    https://tcc.taobao.com    ${headers}
       ${resp}=    Get Request    tcc    /cc/ json/mobile_tel_segment.htm    ${headers} \     ${param}
       Log    ${resp}
-  
+
   rf_http_requestlib_post_case
       ${data}    Create Dictionary    book=RobotFramework
       Create Session    getman    https://getman.cn
@@ -428,3 +647,119 @@ Master节点可以用来负责Slave节点的管理、用户提交的Job的配置
   5）构建任务结束后的操作，包括归档、继续构建其他的工程任务、记录指纹跟踪等。
 
 ## 8.2 如何做到自动化平台的设计
+
+任务的创建、任务的管理、任务的调度、测试用例的解析，测试用例分别根据不同的测试类型分发给不同的测试工具或者测试Lib库进行执行，并且需要对执行的数据进行分析，得出质量数据。
+
+框架图中的自动化测试平台框架主要包含4部分：自动化测试用例编写的IDE工具，自动化测试用例的执行，测试任务的管理和监控，测试用例执行后的数据分析。
+
+- **常用自动化框架介绍**
+
+  Cucumber介绍
+
+  RedwoodHQ
+
+# 9 Robot Framework框架部分源码解析
+
+`针对python语言来说，第三方库一般默认安装到对应系统下的Python的site-packages目录中。`
+
+**RIDE源码位置：**xxxx/python3.x/site-packages/robotide
+
+**Robot Framework框架的源位置：**E:\work\python\src\python36\Lib\site-packages\robot
+
+- **查找site-packages路径的方法**
+
+```python
+# 方法一
+from distutils.sysconfig import get_python_lib
+print(get_python_lib())
+
+# 方法二
+import site
+site.getsitepackages()
+
+# 方法三
+import sys
+sys.path
+```
+
+## 9.1 Robot Framework框架目录结构
+
+1）api目录
+
+api包主要用于RF框架为其他模块提供公共的API功能模块，调用形式为**from robot.api import ApiName**。该包下共有两个模块文件：deco.py和logger.py。deco.py用于为函数和方法设置自定义关键字名称和标记。logger.py是测试库的公共日志接口，负责向日志文件和控制台写消息。from robot.api import logger
+
+2）libdocpkg目录
+
+libdocpkg包主要用于处理RF框架下测试套件及测试用例的Documentation中的内容。共包含10个模块，较为常用的模块文件有htmlwriter.py和writer.py。htmlwriter.py主要用于实现Documentation中内容的格式化，以及转换成html的格式化。write.py模块主要用于实现测试套件及测试用例的Documentation中的内容的写入。
+
+3）libraries目录
+
+libraries包是RF框架内置模块的目录，在官网上称为标准库(Standard Library)。libraries包共由17个文件组成，排除`__init__.py`文件，共包含16个模块文件。标准库又分为两类：一类是内置库（BuiltIn库），它由RF框架自动加载到内存的，不需要导入；另一类标准库需要导入才可以使用，如XML库，在使用前需要import XML才能正常使用。
+
+4）parsing目录
+
+parsing包主要实现对测试数据（包括测试套件和测试用例）的解析。实现对测试数据的CRUD操作，并能把操作结果保存到本地磁盘。
+
+5）model目录：该包里提供了keyword、testsuite、testcase、tags、status、metadata等常用模块文件。
+
+6）running目录：该包模块提供了Robot Framework框架测试的核心执行逻辑。
+
+7）writer目录：该包主要用于将解析的测试数据写回文件。
+
+8）reporting目录：该包主要用于实现测试报告（report.htm、log.html、output.xml及argfile文件）的生成。
+
+9）output目录：此包负责内部日志文件及其他输出文件的生成。
+
+10）htmldata目录：此包负责实现对输出数据的HTML的格式化处理。
+
+11）其它
+
+run.py 功能：Robot Framework的核心程序就是通过它来执行脚本的。
+
+version.py 功能：这个文件用于生成版本。
+
+rebot.py 功能：提供报告和日志生成功能。
+
+errors.py 功能：提供各种错误子类的定义。
+
+libdoc.py 功能： 用于库文档的生成。
+
+tidy.py 功能： 用来提供清理数据和转换数据格式的功能。
+
+testdoc.py 功能：该模块基于Robot Framework测试数据，生成测试文档。
+
+`备注：如导入run.py模块，采用from robotimport run形式；模块中提供的函数和类功能，则可以采用fromrobot.libdoc import libdoc_cli形式来导入`
+
+## 9.2 Robot Framework执行用例逻辑分析
+
+`RF框架在解析测试用例数据时是通过调用Pybot或者Robot命令来进行的。即便通过RIDE或者其它RF GUI工具运行测试用例，本质也是调用Pybot或Robot命令来解析执行测试用例数据的。`
+
+**Robot启动文件存放位置：**  E:\work\python\src\python36\Scripts
+
+**RF框架执行测试用例的整个过程：**1）创建TestSuiteBuilder测试套件对象。 2）对测试套件中的内容进行遍历。3）装载并运行测试套件。
+
+## 9.3 Robot Framework二次开发——命令行实时显示日志
+
+测试用例编写和调试阶段，通常会借助于RIDE或者Pycharm等图像化编辑工具，这些工具的优势在于调试方便、日志输出详细。若将Robot Framework自动化测试用例接入持续集成（Jenkins）系统或者在一些非GUI的操作系统（例如CentOS）下运行时，一般只能采用命令行的形式。
+
+- RF框架日志信息分为三种：
+
+  1）执行完用例后生成的log.html，该文件可作数据留存但不能实时获取，因为该文件是在执行完毕后生成。
+
+  2）命令执行时留存的记录，在命令行执行RF测试用例时，会有很多日志打印出来，但这类日志可获取的信息较少，实时性不够高。
+
+  3）RIDE的日志实时显示，且日志显示信息是最全面的。
+
+- 命令行的形式来运行test_suit01测试套件，输出结果如下：
+
+  robot test_suit01.robot
+  python -m robot.run test_suit01.robot
+
+  ![05_10robot输出结果.png](./img/05_10robot输出结果.png)
+
+  `备注：只会输出测试用例的执行结果，不会输出测试用例运行过程中的打印日志信息`
+
+  
+
+- 
+

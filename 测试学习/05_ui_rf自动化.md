@@ -105,10 +105,6 @@ python -m unittest -h # 命令行选项
 
 (Robot Framework如果您想使用Python进行测试自动化工作，最好的选择就是Robot Framework）
 
-[robotframework官网](https://robotframework.org/#examples)
-
-[robot framework中文文档最新版](https://robotframework-userguide-cn.readthedocs.io/zh_CN/latest/)
-
 [全面学习robotframework框架二](https://www.jianshu.com/p/dc9dea0741d5)
 
 ```shell
@@ -301,72 +297,7 @@ pycharm插件和vscode具体用那个优劣后续研究???
 
 
 
-### 5  RF自动化框架环境搭建
 
-[Robot Framework 自动化测试框架安装](https://www.jianshu.com/p/985331427cbe)
-
-[Robot Framework 安装配置](https://www.jianshu.com/p/9dcb4242b8f2)
-
-[使用pycharm编写和运行RF脚本](https://blog.csdn.net/CCGGAAG/article/details/77529724)
-
-```shell
-借助于 Python 的包管理器 pip 进行安装
-1 安装python
-https://www.python.org/downloads/
-一路next，<python_path>指python的安装目录，将 <python_path> 和 <python_path>\Scripts 加入环境变量PATH系统变量中即可
-
-2 安装RobotFramework 
-pip install robotframework     # cmd窗口 pybot --version , 如成功显示版本号，则表示robot安装成功
-
-3 安装第三方库
-pip install wxpython   # 不安装则无法运行 RIDE 编辑器
-pip install robotframework-ride  # 安装 RIDE 编辑器 （一般Ride.py会自动被安装到python的Scripts目录下）
-
-pip install robotframework-seleniumlibrary  # 用于进行 Web 自动化测试
-pip install robotframework-appiumlibrary  # 用于进行 app 自动化测试
-pip install robotframework-requests  # 用于进行接口自动化测试      >>>
-pip install robotframework-autoitlibrary  # 用于进行 Windows GUI 自动化测试（专用于 Windows 系统，安装时需要管理员权限）  ??? 
-
-4 浏览器驱动下载(多用谷歌或火狐)
-chromedriver 下载  版本选择:  如何为Chrome配对chromedriver: https://zhuanlan.zhihu.com/p/110274934
-chromedriver当置到改目录下    E:\work\python\src\python36\Scripts (windows 环境变量已配置好)
-
-驱动下载： 
-http://npm.taobao.org/mirrors/chromedriver/
-https://ftp.mozilla.org/pub/firefox/releases/
-
-5 pycharm插件配置 （Robot Framework Support 暂未启用; 目前仅启用了 intelliBot）
-Robot Framework support plugin for IntelliJ Idea
-
-https://blog.csdn.net/hy245120020/article/details/50776197  使用pycharm配置python的virtualenv环境
-https://www.cnblogs.com/Huangzena/p/11772650.html  Pycharm+Rf框架的自动化
-
-1）pycharm下载 intelliBot 插件 : Settings——Plugins——intelliBot, 重启
-2）配置RF的文件类型识别: 编辑器——文件类型——Robot Feature——添加*.txt
-3）配置suite和case的运行配置：在运行脚本时，可以单独运行一个用例，也可以直接运行一个用例集合suite。
-所以我们这里要配置两个，打开File——settings——tools——external tools：
-配置suite
-Robot Run TestSuite
--d results $FileName$
-$FileDir$
-
-设置case
-Robot Run SingleTestCase
--d results -t "$SelectedText$" ./
-$FileDir$
-
-4）导入已编写好的rf脚本，即可运行： 右键调出编辑菜单，然后通过external来运行
-5）查看测试报告：
-
-
-6 其它包下载
-python -m pip install --upgrade pip
-pip install -U selenium  # 源码包位置 E:\work\python\src\python36\Lib\site-packages
-pip install Django
-pip install -U Django # 升级Django
-```
-
-### 
 
 五 测试框架
 common    一些基础的底层方法类
