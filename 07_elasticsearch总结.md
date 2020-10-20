@@ -1,5 +1,7 @@
 ## 1、基本概念
 
+ElasticSearch(以下简称ES)是一个基于Lucene构建的开源(open-source)，分布式(distributed)，RESTful，实时(real-time)的搜索与分析(analytics)引擎。用途：它用于全文索引、结构化数据索引、数据分析以及三者的结合。扩展至数百台的服务器节点上来处理PB级的数据1PB=1024TB。ES建立在Lucene的基础之上，但是Lucene仅仅是一个库，如果要发挥它的优势，你必须使用它然后再结合自己的开发来构造一个具体的应用。ES意在取Lucene的优点，隐蔽其复杂性来构造一个简洁易用的RESTful风格的全文搜索引擎。
+
 ```shell
 analysis分析：将文本text转化为查询词term的过程（用于进行全文文本(Full Text)的分词，以建立供搜索用的反向索引）。
 cluster集群：一个或多个拥有同一集群名称的节点组成了一个集群。
@@ -36,6 +38,11 @@ red不是所有的主分片均可用。
 
 # TF/IDF(term frequency/inverse document frequecy)算法：TF/IDF检索词频率/反向文档频率
 玩转es集群：https://zhuanlan.zhihu.com/p/24302699
+
+# es原理：倒排索引。
+一个倒序索引由两部分组成：在文档中出现的所有不同的词；对每个词，它所出现的文档的列表。
+
+
 ```
 
 ## 2、常用resful指令（针对es7.8）
@@ -421,14 +428,109 @@ tie_breaker 可以是 0 到 1 之间的浮点数，其中 0 代表使用 dis_max
 }
 
 # 模糊查询，查询字段需设置成not_analyzed(前缀查询，当字段集合较小时，伸缩性不好，且会给集群带来较大的压力。另一个索引时的解决方案，这个方案能使前缀匹配更高效，不过在此之前，需要先看看两个相关的查询： wildcard 和 regexp （模糊和正则）
+
+
+# 常用查询语句
+{
+  "query": {
+    "range": {
+      "DOC_CREATE_TIME": {
+        "gte": "2017-03-30 11:39:27"
+      }
+    }
+  },
+  "sort": {
+    "DOC_CREATE_TIME": {
+      "order": "desc"
+    }
+  }
+}
+
+# 模糊匹配
+{
+  "query": {
+    "wildcard": {
+      "filename": "*jpg"
+    }
+  }
+}
+
+# 多字段匹配
+{
+  "query": {
+    "multi_match": {
+      "query": "2761664028527",
+      "type": "most_fields",
+      "fields": "_all"
+    }
+  }
+}
+
+# match查询
+{
+  "query": {
+    "match": {
+      "uid": "Testuser008"
+    }
+  }
+}
+# 依据id精确查询
+{
+  "query": {
+    "term": {
+      "FD_ID": "2593056731"
+    }
+  }
+}
+
+# nested查询
+{
+  "query": {
+    "nested": {
+      "path": "ATT_INFO",
+      "query": {
+        "match": {
+          "ATT_INFO.FD_FILE_NAME": {
+            "query": "pdf"
+          }
+        }
+      }
+    }
+  }
+}
 ```
 
 ## 4、聚合查询aggs和sql相关
 
 ```shell
 
-# 指标聚合: avg平均数,max,min,sum, boxplot箱线, cardinality基数, stats 统计数据, extended_stats扩展统计数据,geo_bounds地理范围, geo_centroid地理重心, top_hits,top_metrics
-桶聚合: 
+# 指标聚合: min、max、sum、avg、stats、value_count, boxplot箱线, cardinality基数, stats 统计数据, extended_stats扩展统计数据,geo_bounds地理范围, geo_centroid地理重心, top_hits,top_metrics。stats ( 返回 max  min  avg  sum )，extended_stats ( 返回 max  min  avg  sum 方差)，value_count (按字段统计文档数量)。
+{
+  "size": 0, 
+  "aggs": {
+    "stats_pirce": {
+      "stats":  {
+        "field": "price"
+      }
+    }
+  }
+}
+
+
+# 桶聚合: 分桶相当与 SQL 中 SQL 中的 group by。terms  各个价格区间的数量，range  某个范围的数目。
+{
+  "size": 0, 
+  "aggs": {
+    "terms_count": {
+      "terms":  {
+        "field": "price"
+      }
+    }
+  }
+}
+
+{"size":0,"aggs":{"price_range":{"range":{"field":"price","ranges":[{"to":10000},{"from":12000,"to":20000},{"from":30000}]}}}}
+
 {
   "aggs": {
     "avg_boxplot": { "boxplot": { "field": "page_count" } }
@@ -436,7 +538,10 @@ tie_breaker 可以是 0 到 1 之间的浮点数，其中 0 代表使用 dis_max
 }
 
 {"query":{"constant_score":{"filter":{"match":{"type":"hat"}}}},"aggs":{"hat_prices":{"sum":{"field":"price"}}}} # 先查询再聚合
+# 管道聚合 ：Pipeline Aggregations 处理的对象是其他聚合的输出
 
+# 矩阵聚合：matrix_stats
+{"aggs":{"statistics":{"matrix_stats":{"fields":["price"]}}}}
 
 
 # es 引入sql   (rest参数参考:https://www.elastic.co/guide/en/elasticsearch/reference/7.8/sql-rest-fields.html)
@@ -581,6 +686,37 @@ Lucene的段：
 高可用：数据节点挂掉后的自动迁移；主节点挂掉后的自动重选；
 悲观并发控制：读一行的数据前锁定这一行，然后确保只有加锁的数据才可以修改
 乐观并发控制：偶尔发生，重新尝试或刷新数据。
+
+# other tips
+_refresh就可以立即实现内存->文件系统缓存,， 从而使文档可以立即被搜索到。
+id设置：默认自动生成HASH串的随机ID;若业务上需要且可以保证索引数据的唯一性，也可以使用业务ID作为索引ID;
+index的别名设置;
+index映射：已存在的索引是不可以更改它的映射的，存在的索引只有新字段出现时，es会为新字段自适应类型。确实需要修改映射，reindex数据重新导入新建mapping的索引。
+以字符串为例(索引有3个选项:analyzed,not_analyzed精确索引,no不索引该字段)：
+"myfieldname" : {  
+    "type" : "string",  
+    "index" : "not_analyzed"  
+}
+
+"title" : {  
+    "type" : "string",  
+    "fields" : {  
+        "raw" : {  
+            "type" : "string",  
+            "index" : "not_analyzed"          
+        }  
+    }  
+} 
+
+分词器：
+english对英文更加智能，可以识别单数负数，大小写，过滤stopwords(例如“the”这个词)等
+ik(智能分词)		ik_smart(粗粒度拆分)		ik_max_word(细粒度拆分)
+pinyin(拼音分词器)
+standard一个一个词（汉字）切分
+chinese效果差
+curl -XPOST 'http://127.0.0.1:9200/_analyze?analyzer=english&pretty' -d'{"text": "elasticsearch is a search tech"}'
+
+采用ik分词器实现同义词搜索：参考网址:http://blog.csdn.net/yusewuhen/article/details/50685685
 ```
 
 ## 6、ES评分机制
@@ -724,9 +860,28 @@ snapshot 做好备份
 2.设置映射时尽量不要采用自适应字段类型的方式
 ```
 
+## 10、ES常见问题解决方案
 
+```shell
+# es集群出现unsigned解决办法
+curl '127.0.0.1:9200/_nodes/process?pretty'   # 查看集群节点
+curl -XGET http://127.0.0.1:9200/_cat/shards|grep UNASSIGNED   # 查看UNASSIGNED分片数目
 
+curl -XPOST 'localhost:9200/_cluster/reroute' -d '{
+    "commands" : [ {
+        "allocate" : {
+            "index" : "graylog_83",
+            "shard" : 1,
+            "node" : "ii7B1dHJR5iFRRdgKhdlhg ",
+            "allow_primary" : true
+        }
+    }]
+}'
 
+index就是索引的名称：也就是graylog_88,graylog_86,graylog_87.....
+node:就是在哪个节点上执行；
+shared：分片的编号！
+```
 
 
 

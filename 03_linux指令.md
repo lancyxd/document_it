@@ -198,7 +198,7 @@
   itop # 查看网卡流量 iftop -i eth1
   # 配置yum源：yum源的指向文件存在于/etc/yum.repos.d/目录下
   
-  #环境变量
+  #环境变量：指定一个目录，运行软件的时候，相关的程序将会按照该目录寻找相关文件。
   /etc/profile,export ES_HEAP_SIZE=2g,  source  /etc/profile # 全局环境变量（系统级）
   ~/.bashrc,export ES_HEAP_SIZE=2g , source ~/.bashrc #(/home/elsearch/.bashrc 具体elsearch用户的设置)
   export NGINX=/usr/local/nginx #配置环境变量
@@ -207,6 +207,10 @@
   # /etc/bashrc 设置系统bash shell相关的东西对系统内所有用户生效。只要用户运行bash命令，则其就起作用
   # ~/.bash_profile （用来设置一些环境变量，是针对用户来设定的，在/home/user1/.bash_profile 中设定了环境变量，那么这个环境变量只针对 user1 这个用户生效）
   # 临时生效（仅对当前会话有效） export PATH=$PATH:/usr/local/apache/bin
+  
+  # 修改bashrc文件，这种方法更为安全，它可以把使用这些环境变量的权限控制到用户级别，这里是针对某一特定的用户，如果你需要给某个用户权限使用这些环境变量，你只需要修改其个人用户主目录下的 .bashrc文件就可以了。
+  在下面添加：Export  PATH="$PATH:/NEW_PATH"
+  
   
   # nohup程序后台启动
   nohup ./bulk_inserter >/dev/null 2>&1 &    #( /dev/null 2>&1错误重定向到标准输出，然后再重定向 /dev/null，此处的顺序不能更改，否则达不到想要的效果，nohup会自动将输出写入nohup.out文件中)
@@ -406,7 +410,7 @@ tcp.flags==0x011
 
 ## 2、vi及文本三剑客grep、sed、awk
 
-- **grep**    
+- **grep** （Global Regular Expression Print过滤）
 
   ```powershell
   # 参数详解
@@ -436,6 +440,14 @@ tcp.flags==0x011
   grep '[0-9]\{11\}' 1.txt             # 电话号码17692691946
   grep -n '[0-9]\{6\}$' datafile # 显示工资六位数，在每行的尾部
   grep 127.0.0.1 ./ -r -n  # 过滤当前目录的127.0.0.1
+  
+  ps -ef|grep main.py # 查找进程
+  grep 'INFO' doc_extract.log convertor.log   # 从多个文件中查找关键词
+  grep -n 'linux' test.txt test2.txt # -n在显示符合样式的那一行之前，标示出该行的列数编号
+  cat test.txt |grep ^u # 找出以u开头的行
+  cat test1.txt |grep ^[^h] # 输出非h开头的行
+  cat test.txt |grep hat$ # 输出以hat结尾的行
+  
   ```
 
 - **awk：**根据内容分析并处理，用于文本处理的语言（取行，过滤），支持正则。对于grep的查找，sed的编辑，awk在对数据分析并生成报告时，显得尤为强大
