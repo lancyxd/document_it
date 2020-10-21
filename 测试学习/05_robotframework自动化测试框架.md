@@ -104,11 +104,13 @@
 
   建立测试与代码的覆盖联系：通过自动化工具能够确定测试用例的覆盖路径，确定测试用例集对程序逻辑流程和控制流程的覆盖。
 
-# 2 初始Robot Framework
+# 2 初始Robot Framework及RF语法
 
 [robotframework官网](https://robotframework.org/#examples)
 
 [robot framework中文文档最新版](https://robotframework-userguide-cn.readthedocs.io/zh_CN/latest/)
+
+`Robot Framework变量是大小写不敏感的，并且变量中的空格和下画线将被忽略。一般建议全局变量全用大写字母，局部变量全用小写字母。`
 
 ## 2.1 Robot Framework概述
 
@@ -214,6 +216,8 @@ https://ftp.mozilla.org/pub/firefox/releases/
 
 **4）pycharm插件配置** （Robot Framework Support 暂未启用; 目前仅启用了 intelliBot）
 
+**备注：[在PyCharm编辑器下如何配置Robot Framework和运行Robot Framework的脚本](https://weread.qq.com/web/reader/deb3263071df0073debdc1ak6c8328f022d6c8349cc72d5)
+
 ```shell
 Robot Framework support plugin for IntelliJ Idea
 
@@ -246,14 +250,32 @@ $FileDir$
 
 
 
-## 2.3 如何创建一个自动化项目
+## 2.3 RIDE介绍及如何创建一个自动化项目
 
 **robotframe工具：** [RIDE](https://pypi.org/project/robotframework-ride) , 插件工具（pycharm下载 intelliBot 插件；jekins plugin等）。**RIDE是Robot Framework框架官方提供的GUI工具。**
 
-- **ride安装方法**
+- **ride安装方法和启动**
 
   pip install robotframework-ride 或者 下载Ride工具包进行离线安装。
 
+  - **启动方式**
+
+    通过界面图标双击打开；在命令行终端输入ride.py；进入Python的安装目录下的/Scripts目录，找到ride.py文件，然后在其上单击鼠标右键，在弹出的菜单中选择“发送到”，再选择“桌面快捷方式”。
+
+- **RIDE编辑器的特点**
+
+  测试用例采用文本文件保存；提供了表格语法和代码文本两种编辑用例的组织风格；强大的用例执行辅助功能，如Setup、Teardown、Template、Tag等；测试用例支持变量、if语句、for循环等逻辑语句，且测试人员可根据自身需要灵活创建关键字或测试库；测试执行报告和日志是HTML格式的，易于阅读且报告皆自动生成；支持关键字驱动、数据驱动和行为驱动等多种用例设计模式。
+
+  - **RIDE编辑器介绍**
+
+    工具栏（前进，后退，保存，保存所有等）。
+
+    案例区：包括案例（测试用例、测试套件），还包括资源文件、用户关键字等。
+
+    工作区：主要是编辑用例、运行用例的操作区。
+  
+    菜单栏（File菜单；Edit菜单；Tools菜单；Navigate菜单:前进或后退，一般用于用例之间的跳转；Macros菜单：管理运行配置，其实就是管理自定义好的一些常用执行命令)。
+  
 - **ride编辑器的使用**
 
   1）创建测试项目RF_DEMO 
@@ -262,11 +284,13 @@ $FileDir$
 
   2）创建测试套件： 选择该测试项目，右击鼠标键，选择New Suite，输入测试套件名称，即可创建成功。
 
-  3）创建测试用例：选择该测试套件，右击，选择New Test Case，输入用例名称，单击OK，创建成功。
+  3）创建测试用例(测试用例是测试项目中的最小可执行单元，且在RIDE编辑器中测试用例的创建只能在类型为File的测试套件下创建)：选择该测试套件，右击，选择New Test Case，输入用例名称，单击OK，创建成功。
 
   创建成功后，可看到下面的用例编写表格，通过该表格，可以编写测试用例。
   
-  4）测试用例的执行：勾选我们的测试用例，单击菜单栏Tools→Run Tests（或者直接快捷键F8）来执行
+  4）测试用例的执行：勾选我们的测试用例，单击菜单栏Tools→Run Tests（或者直接快捷键F8）来执行。
+  
+  **备注：**当测试套件名称前面多了一个*符号时，则表明该测试套件下有新的修改还没有保存，提醒我们修改内容后要立即保存。
 
 ## 2.4 Robot Framework基础关键字
 
@@ -324,7 +348,55 @@ $FileDir$
 
 - **Run Keyword类型关键字**
 
+## 2.5 RF资源文件
+
+`由于资源还没有被任何测试套件或资源文件加载引用，此时文件显示为灰色。资源文件和测试套件在RIDE编辑器中的区别是资源文件图标上会有个齿轮符号，且显示的名称后面多了扩展名显示`
+
+资源文件（Resource）的主要用途是存放用户关键字，资源文件又分为内部资源文件和外部资源文件。Format：格式类型，默认推荐ROBOT。
+
+**内部资源文件:**仅能在目录型的测试项目（Project）和测试套件（Test Suite）中才可以添加。
+
+**外部资源文件**：指不在项目（Project）管辖范围内的资源文件（跨项目引用的资源文件）。什么样的资源文件才算不在管辖范围内呢？如果是目录的项目，只要不在该目录内的资源文件，都算外部资源。如果是文件的项目，因为本身无法创建资源文件，所以对于它而言，其他的资源文件都算外部资源。
+
+**引用外部资源文件的方法**？在External Resource目录上单击鼠标右键，在弹出的菜单中选择AddResource，弹出对话框，找到外部资源的存放路径，单击确定按钮，即可导入外部资源。成功导入外部资源文件到External Resource目录后，再将外部资源文件加载到测试套件配置中，此时对应的Project下即可正常调用所导入的外部资源文件。
+
+## 2.6 常量和变量
+
+- **变量**
+
+  变量分类：Scalar标量类型、List列表类型和Dictionary字典类型。@{EMPTY}和&{EMPTY}，分别表示“空列表”和“空字典”变量。
+
+  **变量作用域：**默认变量只在当前作用域有效，可通过关键字Set Global Variable、Set Suit Variable和Set Test Variable来改变变量的作用域。
+
+  一个Test Case里的变量，作用域在这个Test Case内部。一个User Keyword里的变量，作用域在这个User Keyword内部。一个文件型Test Suite里的变量，作用域在这个Test Suite内部，所有包含在下面的Test Case也都可以使用。一个目录型Test Suite里的变量，作用域在这个目录内，它下面的文件型TestSuite是无法使用的，所以一般在目录下新增变量没有太大意义。
+
+  Set Global Variable：设定全局级变量。Set Suite Variable：设定Test Suite级变量。
+
+  Set Test Variable：设定Test Case级变量。
+
+  - **标量的定义方法**
+
+    案例区使用鼠标右键单击测试套件新建变量New Scalar；单击Add Scalar按钮，添加变量；在脚本中通过Set Variable关键字定义变量。
+
+- **内置变量**
+
+  RF的内置变量主要包括操作系统相关的变量（${CURDIR} 等）和一些测试过程中的自动变量（${TEST NAME}）。
+
+- **常量**分为环境常量、数值常量、特殊字符常量、系统保留常量。其中环境常量用%标识符表示，其他的都用$符号表示。
+
+  环境常量： 语法为%{ENV_VAR_NAME}。
+
+  数值常量： ${3.14}和${80}两个数值常量。
+
+  特殊字符常量：主要有${/}、${：}、${EMPTY}、${SPACE}、${False}、${True}、${None}、${null}，在RIDE中可以通过Ctrl+Alt+Space快捷键查看其真实值。
+
   
+
+- 
+
+
+
+
 
 # 2 Robot Framework对数据库的操作
 
@@ -382,37 +454,34 @@ Create Http Context：关键字其作用相当于创建了一个HTTP调用的环
   Post Request：关键字用来在创建好Session的基础上向服务端发送一个post请求。
 
   [在线http模拟示例](https://getman.cn/)
-
+  
   ```shell
+  # 实例
+    *** Settings ***
+    Library           RequestsLibrary
   
+    *** Variables ***
+    ${vt}             robot    # 具体的变量
+  
+    *** Test Cases ***
+    rf_http_requestlib_case
+        Create Session    RobotFramework    http://robotframework.org
+        ${resp}=    Get Request    RobotFramework     /#libraries
+  
+    rf_http_requestlib_case2
+        ${headers}    Create Dictionary    Accept=text/html,application/xml;q=0.8
+        ${param}    Create Dictionary     tel=18680673197
+        Create Session    tcc    https://tcc.taobao.com    ${headers}
+        ${resp}=    Get Request    tcc    /cc/ json/mobile_tel_segment.htm    ${headers} \     ${param}
+        Log    ${resp}
+  
+    rf_http_requestlib_post_case
+        ${data}    Create Dictionary    book=RobotFramework
+        Create Session    getman    https://getman.cn
+        ${resp}=    Post Request    getman    /echo    ${data}
+        log    ${resp}
   ```
-# 示例
-  *** Settings ***
-  Library           RequestsLibrary
 
-  *** Variables ***
-  ${vt}             robot    # 具体的变量
-
-  *** Test Cases ***
-  rf_http_requestlib_case
-      Create Session    RobotFramework    http://robotframework.org
-      ${resp}=    Get Request    RobotFramework     /#libraries
-
-  rf_http_requestlib_case2
-      ${headers}    Create Dictionary    Accept=text/html,application/xml;q=0.8
-      ${param}    Create Dictionary     tel=18680673197
-      Create Session    tcc    https://tcc.taobao.com    ${headers}
-      ${resp}=    Get Request    tcc    /cc/ json/mobile_tel_segment.htm    ${headers} \     ${param}
-      Log    ${resp}
-
-  rf_http_requestlib_post_case
-      ${data}    Create Dictionary    book=RobotFramework
-      Create Session    getman    https://getman.cn
-      ${resp}=    Post Request    getman    /echo    ${data}
-      log    ${resp}
-  ```
-  
-  
 
 ## 3.3 RESTinstance库的使用
 
