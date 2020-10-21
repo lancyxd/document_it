@@ -22,7 +22,7 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
 
 ### 1.1 编码规范
 
-- 若无特殊情况，文件头部必须加`#-*-coding:utf-8-*-`标识
+ [PEP 8（Python Enhancement Proposal）](https://zhuanlan.zhihu.com/p/88729367)；  [Google的Python风格指南](https://github.com/zh-google-styleguide/zh-google-styleguide)；
 
 - 缩进：统一使用四空格缩进
 
@@ -34,9 +34,9 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
 
   机器标识使用单引号 `'...'` ，例如 dict 里的 key。
 
-  ***正则表达式\*** **使用原生的双引号** `r"..."`。
+  正则表达式使用原生的双引号`r"..."`。
 
-  ***文档字符串 (docstring)\*** **使用三个双引号** `"""......"""`。
+  文档字符串 (docstring) 使用三个双引号 `"""......"""`。
 
 - 空行：模块级函数和类定义之间空两行；类成员函数之间空一行。
 
@@ -81,6 +81,7 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
   #不推荐的写法
   from ..bar import Bar
   import sys,os
+  from foo import *
   
   # 如果发生命名冲突，则可使用命名空
   import bar
@@ -101,6 +102,8 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
   x = x*2 - 1
   hypot2 = x * x + y * y
   c = (a + b) * (a - b)
+  
+  在注释符号#后面加一个空格，但是#！/usr/bin/python的#后面不能有空格。
   ```
 
   - 函数的参数列表中，`,`之后要有空格
@@ -108,6 +111,7 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
   - 左括号之后，右括号之前不要加多余的空格
   - 字典对象的左括号之前不要多余的空格
   - 不要为对齐赋值语句而使用的额外空格
+  - 在list、dict、tuple、set参数列表的后面加一个空格
 
   ```python
    def complex(real, imag):
@@ -166,10 +170,9 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
 
 - docstring规范
 
-  ```python
-  # 所有的公共模块、函数、类、方法，都应该写 docstring 。私有方法不一定需要，但应该在 def 后提供一个块注释来说明。
-  # docstring 的结束"""应该独占一行，除非此 docstring 只有一行。
+  模块内容的顺序：模块说明和docstring→import→globals&constants→其他定义。所有的公共模块、函数、类、方法，都应该写 docstring 。私有方法不一定需要，但应该在 def 后提供一个块注释来说明。 docstring 的结束"""应该独占一行，除非此 docstring 只有一行。
   
+  ```python
   """Return a foobar
   Optional plotz says to frobnicate the bizbaz first.
   """
@@ -215,7 +218,7 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
 
   - 对函数参数、返回值等的说明采用numpy标准；
 
-  - 文档注释不限于中英文, 但不要中英文混用
+  - 文档注释不限于中英文, 但不要中英文混用。优先使用英文写注释，英文不好全部写中文。
   - 文档注释不是越长越好, 通常一两句话能把情况说清楚即可；在代码关键部分，能写注释的要尽量写注释; 比较重要的注释段，使用多个等号隔开，可以更加醒目，突出重要性；
   - 模块、公有类、公有方法, 能写文档注释的, 应该尽量写文档注释
 
@@ -284,7 +287,7 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
   import Decoder
   ```
 
-- 类: 使用驼峰(CamelCase)命名风格，首字母大写，私有类可用一个下划线开头。将相关的类和顶级函数放在同一个模块里. 不像Java, 没必要限制一个类一个模块。
+- 类: 使用驼峰(CamelCase)命名风格，首字母大写，私有类可用一个下划线开头。将相关的类和顶级函数放在同一个模块里. 不像Java, 没必要限制一个类一个模块。类的属性（方法和变量）命名使用全部小写的方式，可以使用下画线。类的属性若与关键字名字冲突，后缀一个下画线，尽量不要使用缩略等其他方式。为避免与子类属性命名冲突，在类的一些属性前，可以加两条下画线作为前缀。
 
   ```python
   class Farm():
@@ -297,7 +300,7 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
       pass
   ```
 
-- 函数:  函数名一律小写，如有多个单词，用下划线隔开。
+- 函数:  函数名一律小写，如有多个单词，用下划线隔开。私有函数在函数前加一个下画线。
 
   ```python
   def run():
@@ -313,7 +316,7 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
           pass
   ```
 
-- 变量名:  变量名尽量小写，如有多个单词，用下划线隔开。
+- 变量名:  变量名尽量小写，如有多个单词，用下划线隔开。异常命名使用CapWords+Error后缀的方式。
 
   ```python
   if __name__ == '__main__':
@@ -336,7 +339,39 @@ python特性是动态语言：变量本身类型不固定的语言称之为动�
           print(print_)
   ```
 
-### 1.4 python概述
+### 1.4 编码建议
+
+- 若无特殊情况，文件头部必须加`#-*-coding:utf-8-*-`标识。
+- 尽可能使用'is'或'is not'取代'=='或'！='，另外在编码中if x is not None优于if x。
+- 使用if some_list而不是if len（some_list）判断某个list是否为空，其他类型同理。
+- 使用startswith（）和endswith（）代替切片进行序列前缀或后缀的检查，比如if foo.startswith（'bar'）优于if foo[：3]=='bar'。
+- 用isinstance而不是type判断类型。
+- 使用字符串的join方法拼接字符串。
+
+### 1.5 python2与python3区别
+
+Python的__future__库。__future__库里面包含不少从Python 3到Python 2的特性，充分使用__future__库，可以很好地兼容Python 2和Python 3。
+
+-  print函数
+  print 'Python',python_version()  # python2
+  print('Python',python_version()) # python3
+-  python2中raw_input和input均存在，python3仅有input
+  my_input=input('enter a number:')  # python3输入一个数，返回str
+-  除法 /和//
+-  异常：python3中使用as作为关键词，捕获异常的语法由except exc，var改为except exc as var
+-  xrange：在Python 2中，有两个方法获得一定范围内的数字：range方法返回一个列表，xrange方法返回一个迭代器。而在Python 3中，range方法返回迭代器，xrange方法不再存在。
+-  不等于运算符: 在Python 3中去掉了<>，只有！=一种写法。
+-  全局函数Callable（） :Python 2中，可以使用全局函数callable来检查一个对象是否可调用。在Python3中，这个全局函数被取消了，为了检查一个对象是否可调用，可以检查其特殊方法__call__的存在性。
+-  去掉了repr表达式：在Python 3中只允许使用repr函数。
+-  在Python 3去除了long类型，现在只有一种整型int，但它的作用就像Python 2中的long类型。
+
+- 核心类差异
+
+  Python 2中用ASCII码作为默认编码，导致String有两种类型：str和Unicode。Python 3中只支持Unicode的String。
+
+  Python 2中存在老式类和新式类的区别，Python 3统一采用新式类。新式类声明要求继承object，必须用新式类应用多重继承。
+
+### 1.6 python概述
 
 - 交互式编程：不需要创建脚本文件，在命令行中输入python。（ll /usr/bin/python*）
   执行脚本文件：python test.py     ./test.py
@@ -595,6 +630,7 @@ print("varible b %s" % b) # varible b hello python
 ```python
 a=b=c=2
 a,b,c=1,2,3
+print(type(a))  # 查看变量的类型
 ```
 
 - 静态变量
