@@ -456,7 +456,12 @@ print('{name},{sex},{age}'.format(age=25, sex='male', name='lin'))
 print('My name is {:*<8}, and I am {} years old.'.format('lin', '25'))
 print('I am {:.2f} meter tall.'.format(1.73))
 print(r'C:\some\name')   # 加r和不加区别：'r'是防止字符转义，若路径中出现'\t'，不加r，'\t'会被转义。加'r'之后'\t'就能保留原有的样子。
+
+str_list=['Hello','world'] # 元素拼接
+print('-'.join(str_list))
 ```
+
+**备注：**格式化类：%、format（）、template。拼接类：+、（）、join（）。
 
 - 基本字符编码
 
@@ -924,9 +929,28 @@ import builtins
 dir(builtins)
 ```
 
+​		1） 局部变量只能在其被声明的函数内部访问，而全局变量可以在整个程序范围内访问。
 
+​		2）global和nonlocal关键字：当内部作用域想修改外部作用域的变量时，可以用global和nonlocal关键字。
 
+```python
+# 修改全局变量num的值
+num=1
+def fun1():
+    global num # 使用global关键字声明
+    print(num)
+    num=123
+    print(num)
 
+fun1()
+print(num)
+'''
+输出结果：
+1
+123
+123
+''' 
+```
 
 - 内建函数
 
@@ -951,10 +975,11 @@ with open(filename,"r") as fp:
         print(fp.read())
     except IOError:
         print('文件打开失败，%s文件不存在' % filename
+           
 ```
 
-  
-
+- **常见内建函数（不用import，可以直接使用的函数）**
+  dir()	help()	int()	len()	open()	str()	type()	callable()	locals()	globals()	isinstance()	issubclass()	hasattr()	getattr()	setattr()	delattr()	all()	reduce()	reload()
 - 自定义函数参数
 
 ```python
@@ -962,7 +987,7 @@ def 函数名(参数1，参数2....参数n):
     函数体
     return 语句
 
-# *hobby是可变参数，且 hobby就是一个 tuple （元祖），**hobby是关键字参数，hobby 就是一个dict（字典）
+# *hobby是可变参数，且 hobby就是一个 tuple （元祖），**hobby是关键字参数，hobby 就是一个dict（字典）。*args和**kwargs是Python的习惯写法，其中args和kwargs也可以用其他参数来命名。
 
 # 关键字参数，位置参数
 def print_user_info( name , age , sex = '男' ):
@@ -1143,16 +1168,69 @@ print_user_info_dict('Lucy',5,'女',hobby = ('打篮球','打羽毛球','跑步'
 
 ### 3.9 面向对象
 
-  不想导入的属性名称加上一个下划线( _ )
+#### 3.9.1 Python实例方法、静态方法、类方法
+
+**实例方法**：第一个参数必须是实例对象，该参数一般约定为self，它表示一个具体的实例本身。通过它来传递实例的属性和方法。 调用：只能由实例对象调用。
+
+**静态方法**：使用装饰器@staticmethod，参数随意，没有self和cls参数，但是方法体中不能使用类或实例的任何属性和方法，这个方法一般当成一个普通的函数使用。调用：实例对象和类对象都可以调用。
+
+**类方法：**使用装饰器@classmethod，第一个参数必须是当前类的对象，该参数名一般约定为cls，通过它来传递类的属性和方法（不能传递实例的属性和方法）。调用：实例对象和类对象都可以调用。
+
+```python
+class Foo(object):
+    def instance_method(self):
+        print('我是类{}的实例方法，只能被实例对象调用'.format(Foo))
+    
+    @staticmethod
+    def static_way():
+        print('我是静态方法')
+        
+    @classmethod
+    def class_way():
+        print('我是类方法')
+
+foo=Foo()
+foo.instance_method()
+foo.static_way()
+foo.class_way()
+print('______________')
+Foo.static_way()
+Foo.class_way() 
+```
+
+  不想导入的属性名称加上一个下划线( _ )。
+
+类的私有属性：以两个下画线开头，声明该属性为私有，不能在类的外部被使用或直接访问。在类内部的方法中使用时用self.__private_attrs。 
+
+类的私有方法：以两个下画线开头，声明该方法为私有方法，不能在类的外部调用。在类的内部调用时用self.__private_methods。
+
+```python
+# Python不允许实例化的类访问私有数据，但可以使用object._className__attrName（对象名．_类名__私有属性名）访问属性。
+class Runoob(object):
+    __site='https://www.hao123.com'
+rb=Runoob()
+print(rb.__Runoob__site)
+```
+
+
 
 - 面向对象概念
 
 面向过程: 解决对象的过程。
 面向对象: 用分类的眼光去看世界的一种方法
 类: 用来描述相同的属性和方法的集合。它定义了该集合中每个对象所共有的属性和方法。对象是类的实例。
+
+类变量：在整个实例化的对象中是公用的。类变量定义在类中且在函数体之外。类变量通常不作为实例变量使用。
+
+数据成员：类变量或者实例变量，用于处理类及其实例对象的相关数据。
+
+方法重写：如果从父类继承的方法不能满足子类的需求，可以对其进行改写，这个过程叫方法覆盖（override），也称为方法重写。
+
+方法：类中定义的函数。
+
 对象: 通过类定义的数据结构实例。类就相对于工厂里面的模具，对象就是根据模具制造出来的产品。**从模具变成产品的过程，我们就称为类的实例化。**类实例化之后，就变成对象了。也就是相当于例子中的产品。
 
-三大特性：继承、封装和多态。
+**三大特性：继承、封装和多态。**
 
 继承：即一个派生类继承基类的字段和方法（一个 Dog 类型的对象派生自 Animal 类，这是模拟"是一个（is-a）"关系）。
 
@@ -1171,6 +1249,7 @@ print_user_info_dict('Lucy',5,'女',hobby = ('打篮球','打羽毛球','跑步'
   
   
   # 新式类
+  # __init__方法是一种特殊的方法，被称为类的构造函数或初始化方法，当创建了该类的实例时就会调用该方法。self代表类的实例，虽然在调用时不必传入相应的参数，但是在定义类的实例方法时self是必须有的。
   class NewClass(object):
       def __init__(self, account, name):
           self.account = account
@@ -1183,7 +1262,7 @@ print_user_info_dict('Lucy',5,'女',hobby = ('打篮球','打羽毛球','跑步'
       print(type(old_class))
       print(dir(old_class))
       print('\n')
-      new_class = NewClass(222222, 'NewClass')
+      new_class = NewClass(222222, 'NewClass') # 根据NewClass类创建对象new_class
       print(new_class)
       print(type(new_class))
       print(dir(new_class))
@@ -1301,11 +1380,13 @@ print_user_info_dict('Lucy',5,'女',hobby = ('打篮球','打羽毛球','跑步'
 
   一个函数调用了其它函数完成一项功能，称这个函数为主函数; 若一个函数没有调用其它函数，则称这种函数为非主函数。
 
-  主模块：一个模块被直接使用，而没有被别人调用。非主模块：一个模块被别人调用。`__name__` 属性值是一个变量，且这个变量是系统给出的。用 `__name__` 属性判断主模块和非主模块。若一个属性的值是 `__main__` ,那么就说明这个模块是主模块。
+  主模块：一个模块被直接使用，而没有被别人调用。非主模块：一个模块被别人调用。`__name__` 属性值是一个变量，且这个变量是系统给出的。用 `__name__` 属性判断主模块和非主模块。若一个属性的值是 。`__main__` ,那么就说明这个模块是主模块。当.py文件被直接运行时，`__name__=='__main__ '`之下的代码块将被运行；当.py文件以模块形式被导入时，if `__name__=='__main__ '`之下的代码块不被运行。
 
-  当.py文件被直接运行时，`__name__=='__main__ '`之下的代码块将被运行；当.py文件以模块形式被导入时，if `__name__=='__main__ '`之下的代码块不被运行。
+  `__name__` 属性：一个模块被另一个程序第一次导入时，其主程序将被执行。如果我们想在模块导入时，不执行模块中的某一程序块，可以用`__name__`属性来使该程序块仅在该模块自身运行时执行。
 
 - **包和作用域**
+
+  **包：**就是文件夹，但在该文件夹下必须存在`__init__.py`文件，该文件的内容可以为空。有没有`__init__.py`用于标识当前文件夹是否是一个包。
 
   `__init__.py` 的文件存在原因？这个文件是必须存在的，否则，Python 就把这个目录当成普通目录，而不是一个包 。`__init__.py` 可以是空文件，也可以有Python代码，因为 `__init__.py` 本身就是一个模块，而它对应的模块名就是它的包名。**init.py 文件的作用是将文件夹当做模块，目录中必须包含 init.py 文件**。
 
@@ -1313,11 +1394,37 @@ print_user_info_dict('Lucy',5,'女',hobby = ('打篮球','打羽毛球','跑步'
 
   `__new__` 是用来创建类并返回这个类的实例, 而`__init__` 只是将传入的参数来初始化该实例。先是调用了 `__new__` 方法来创建一个对象，把参数传给 `__init__` 方法进行实例化。
   
+  
+  
+  `__all__`变量使用：默认情况下，如果使用“from模块名import *”这样的语句来导入模块，程序会导入该模块中所有不以下画线开头的程序单元。
+  
+  ```python
+  def hello():
+      print('hello')
+  def world():
+      print('world')
+  def test():
+      print('--test--')
+  
+  # 定义__all__变量，指定默认只导入hello和world两个程序单元    
+  __all__=['hello','world']
+  
+  # 导入all_module所有成员
+  from all_module import *
+  hello()
+  world()
+  test()  # 会提示找不到test，使用from all_module import *导入了all_module模块下所有的程序单元。由于该模块包含了__all__变量，所以该语句只导入__all__变量所列出的程序单元。__all__变量的意义在于为模块定义了一个开放的公共接口。通常来说只有__all__变量列出的程序单元，才是该模块希望被外界使用的程序单元。
+  ```
+  
+  
+  
 - **文件操作：**打开；写入；读取；关闭；定位；改名；删除；写入时会把原来的覆盖掉。close() 方法允许调用多次。
 
    try except语句变化:  try:    ....    except Exception as e:    ....
 
-  
+- **Python解析器对模块位置的搜索顺序:**
+
+  当前目录；如果不在当前目录，则搜索在环境变量PYTHONPATH下的每个目录；如果都找不到，则会查看默认路径。在UNIX下，默认路径一般为/usr/local/lib/python/。
 
 ### 3.11 元类
 
